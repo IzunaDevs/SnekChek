@@ -1,2 +1,2 @@
 # SnekCheck
-A custom python linter/checker manager
+A generalized, highly customizable python linter
