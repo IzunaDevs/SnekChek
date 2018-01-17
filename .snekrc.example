@@ -1,0 +1,4 @@
+[all]
+
+linters = flake8, pylint, yapf, isort, pyroma, safety, bandit, dodgy, pydocstyle, vulture, pytest, pypi
+
