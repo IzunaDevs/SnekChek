@@ -24,23 +24,23 @@ Implemented:
 """
 
 from snekchek.structure import CheckHandler
-'''
+
 from snekchek.lint import get_linters
 from snekchek.style import get_stylers
 from snekchek.secure import get_security
-'''
+
 
 def main():
     handler = CheckHandler()
 
     for linter in get_linters():
-        handler.run_lint(linter)
+        handler.run_linter(linter)
 
     for style in get_stylers():
-        handler.run_style(styler)
+        handler.run_linter(style)
 
     for security in get_security():
-        handler.run_secure(security)
+        handler.run_linter(security)
 
     handler.exit()
 

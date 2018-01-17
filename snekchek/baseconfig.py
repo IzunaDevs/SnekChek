@@ -1,3 +1,6 @@
+import os
+
+
 __all__ = ("config",)
 
 config = {
@@ -9,7 +12,7 @@ config = {
     "pypi": {
         "TWINE_USERNAME": os.environ.get("TWINE_USERNAME", "abc"),
         "TWINE_PASSWORD": os.environ.get("TWINE_PASSWORD", "abc")
-    }
+    },
     "flake8": {
     },
     "pylint": {
