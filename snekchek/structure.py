@@ -28,6 +28,7 @@ class CheckHandler:
         self.parser["DEFAULT"] = config
 
         self.parser.read(file)
+        self.fn = file
         self.status_code = 0
         self.logs = {}
         self.current = ''
@@ -55,6 +56,7 @@ class CheckHandler:
             return
 
         linter.add_output_hook(self.out_func)
+        linter.set_config(self.fn, self.parser[linter.name])
         linter.run(self.files)
         self.status_code = self.status_code or linter.status_code
 
@@ -66,9 +68,15 @@ class Linter:
     def __init__(self):
         self.status_code = 0
         self.hook = None
+        self.confpath = None
+        self.conf = None
 
     def add_output_hook(self, func):
         self.hook = func
+
+    def set_config(self, confpath, section):
+        self.confpath = confpath
+        self.conf = section
 
     @property
     def name(self):

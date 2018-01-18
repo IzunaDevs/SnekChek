@@ -17,6 +17,7 @@ import re
 from snekchek.structure import Linter
 
 import flake8.main.cli
+import vulture.core
 
 
 def get_linters():
@@ -24,21 +25,35 @@ def get_linters():
 
 
 class Flake8(Linter):
-    type_ = "extension"
-    return_type = "json"
-
     patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
                       r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
 
     def __init__(self):
         super().__init__()
-
-        self.out = ""
         self.f = io.StringIO()
 
     def run(self, files):
         with contextlib.redirect_stdout(self.f):
-            flake8.main.cli.main(["--config", ".snekrc"])
+            flake8.main.cli.main(["--config", self.confpath])
+        self.f.seek(0)
+        matches = self.patt.finditer(self.f.read())
+        self.status_code = 1 if matches else 0
+        self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
+
+
+class Vulture(Linter):
+    patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+): "
+                      r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') \((?P<conf>[0-9]+)% confidence")
+
+    def __init__(self):
+        super().__init__()
+        self.f = io.StringIO()
+
+    def run(self, files):
+        vult = vulture.core.Vulture(self.conf.get("verbose"))
+        vult.scavenge(files, self.conf.get("exclude"))
+        with contextlib.redirect_stdout(self.f):
+            vult.report(self.conf.get("min-confidence"), self.conf.get("sort-by-size"))
         self.f.seek(0)
         matches = self.patt.finditer(self.f.read())
         self.status_code = 1 if matches else 0
