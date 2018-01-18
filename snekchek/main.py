@@ -51,7 +51,7 @@ def run_main(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--json", help="output in JSON format", action="set_true", default=False)
+    parser.add_argument("--json", help="output in JSON format", action="store_true", default=False)
     parser.add_argument("--config-file", help="Select config file to use", default=".snekrc")
     args = parser.parse_args()
 
