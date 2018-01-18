@@ -1,6 +1,7 @@
 from setuptools import find_packages, setup
+from snekfetch import misc
 
-with (open("README.md"), open("requirements.txt")) as (readme, requirements):
+with open("README.md") as readme, open("requirements.txt") as requirements:
     setup(
         name="snekchek",
         author="izunadevs",
