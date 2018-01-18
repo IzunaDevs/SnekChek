@@ -6,8 +6,10 @@ TWINE_USERNAME = abc
 TWINE_PASSWORD = abc
 
 [flake8]
+max-line-length=100
 
 [pylint]
+max-line-length=100
 
 [yapf]
 
