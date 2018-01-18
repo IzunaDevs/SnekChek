@@ -7,7 +7,8 @@ from snekchek.baseconfig import config
 
 def flatten(l: list) -> list:
     """ Flattens a list, ignore all the lambdas """
-    return list(sorted(filter(lambda y: y is not None, list(map(lambda x: l.extend(x) if type(x) is list else x, l)))))
+    return list(sorted(filter(lambda y: y is not None,
+                              list(map(lambda x: l.extend(x) if isinstance(x, list) else x, l)))))
 
 
 def get_py_files(dir_name: str) -> list:
