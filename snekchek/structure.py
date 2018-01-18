@@ -1,4 +1,5 @@
 import configparser
+import json
 import os
 import sys
 
@@ -32,14 +33,14 @@ class CheckHandler:
         self.current = ''
 
         self.files = get_py_files(check_dir)
-        print(self.files)
 
     def exit(self):
         for name, log in self.logs.items():
             if self.parser[name].get("quiet"):
                 continue
 
-            print(log)
+            print(f"[[{name}]]")
+            print(json.dumps(log, indent=4))
 
         sys.exit(self.status_code)
 
