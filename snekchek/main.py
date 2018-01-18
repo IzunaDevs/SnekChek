@@ -19,7 +19,10 @@ Linter/Styler/Checker combined for:
 
 
 Implemented:
--
+- flake8
+- flake8-bugbear (ext)
+- flake8-import-order (ext)
+- flake8-mypy (ext)
 
 """
 
@@ -34,13 +37,13 @@ def main():
     handler = CheckHandler()
 
     for linter in get_linters():
-        handler.run_linter(linter)
+        handler.run_linter(linter())
 
     for style in get_stylers():
-        handler.run_linter(style)
+        handler.run_linter(style())
 
     for security in get_security():
-        handler.run_linter(security)
+        handler.run_linter(security())
 
     handler.exit()
 
