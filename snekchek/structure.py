@@ -23,24 +23,28 @@ def get_py_files(dir_name: str) -> list:
 
 
 class CheckHandler:
-    def __init__(self, check_dir="."):
+    def __init__(self, file, out_json, check_dir="."):
         self.parser = configparser.ConfigParser()
         self.parser["DEFAULT"] = config
 
-        self.parser.read(".snekrc")
+        self.parser.read(file)
         self.status_code = 0
         self.logs = {}
         self.current = ''
+        self.json = out_json
 
         self.files = get_py_files(check_dir)
 
     def exit(self):
-        for name, log in self.logs.items():
-            if self.parser[name].get("quiet"):
-                continue
+        if self.json:
+            print(json.dumps(self.logs, indent=4))
 
-            print(f"[[{name}]]")
-            print(json.dumps(log, indent=4))
+        else:
+            for name, log in self.logs.items():
+                if self.parser[name].get("quiet"):
+                    continue
+
+                print(log)
 
         sys.exit(self.status_code)
 
