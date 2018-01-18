@@ -21,7 +21,7 @@ import vulture.core
 
 
 def get_linters():
-    return (Flake8,)
+    return (Flake8, Vulture)
 
 
 class Flake8(Linter):
@@ -34,7 +34,12 @@ class Flake8(Linter):
 
     def run(self, files):
         with contextlib.redirect_stdout(self.f):
-            flake8.main.cli.main(["--config", self.confpath])
+            try:
+                sett = ["--config", self.confpath]
+                sett.extend(files)
+                flake8.main.cli.main(sett)
+            except SystemExit:
+                print("aaa")
         self.f.seek(0)
         matches = self.patt.finditer(self.f.read())
         self.status_code = 1 if matches else 0
@@ -50,10 +55,10 @@ class Vulture(Linter):
         self.f = io.StringIO()
 
     def run(self, files):
-        vult = vulture.core.Vulture(self.conf.get("verbose"))
+        vult = vulture.core.Vulture(self.conf.get("verbose", False))
         vult.scavenge(files, self.conf.get("exclude"))
         with contextlib.redirect_stdout(self.f):
-            vult.report(self.conf.get("min-confidence"), self.conf.get("sort-by-size"))
+            vult.report(self.conf.get("min-confidence", 60), self.conf.get("sort-by-size", False))
         self.f.seek(0)
         matches = self.patt.finditer(self.f.read())
         self.status_code = 1 if matches else 0
