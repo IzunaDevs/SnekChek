@@ -16,7 +16,8 @@ def get_py_files(dir_name: str) -> list:
                     for x in [[f"{path}/{f}"
                                for f in files
                                if f.endswith(".py")]
-                              for path, _, files in os.walk(dir_name)]
+                              for path, _, files in os.walk(dir_name)
+                              if not path.startswith("./build")]
                     if x])
 
 
