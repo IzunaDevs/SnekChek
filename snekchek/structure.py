@@ -4,7 +4,7 @@ import os
 import sys
 
 from snekchek.baseconfig import config
-from snekchek.format imporr get_formatter
+import snekchek.format
 
 
 def flatten(l: list) -> list:
@@ -46,7 +46,9 @@ class CheckHandler:
                 if self.parser[name].get("quiet"):
                     continue
 
-                get_formatter(name).write_out(log)
+                print(f"[[{name}]]")
+                getattr(snekchek.format, name+"_format")(log)
+                print("\n")
 
         sys.exit(self.status_code)
 

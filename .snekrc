@@ -11,4 +11,4 @@ max-line-length=100
 [yapf]
 
 [vulture]
-
+min-confidence=80

@@ -55,10 +55,11 @@ class Vulture(Linter):
         self.f = io.StringIO()
 
     def run(self, files):
-        vult = vulture.core.Vulture(self.conf.get("verbose", False))
-        vult.scavenge(files, self.conf.get("exclude"))
+        vult = vulture.core.Vulture(False if self.conf.get("verbose", 'false') == 'false' else True)
+        vult.scavenge(files, [x.strip() for x in self.conf.get("exclude").split(",")]
         with contextlib.redirect_stdout(self.f):
-            vult.report(self.conf.get("min-confidence", 60), self.conf.get("sort-by-size", False))
+            vult.report(int(self.conf.get("min-confidence", 60)),
+                        False if self.conf.get("sort-by-size", 'false') == 'false' else True)
         self.f.seek(0)
         matches = self.patt.finditer(self.f.read())
         self.status_code = 1 if matches else 0
