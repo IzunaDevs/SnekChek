@@ -19,6 +19,7 @@ This file:
 
 import contextlib
 import io
+import json
 import re
 
 from snekchek.structure import Linter
