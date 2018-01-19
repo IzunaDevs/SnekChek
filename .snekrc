@@ -22,3 +22,6 @@ atomic=true
 
 [vulture]
 min-confidence=60
+
+
+[pylint]

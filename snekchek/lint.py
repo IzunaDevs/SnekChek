@@ -25,10 +25,11 @@ from snekchek.structure import Linter
 
 import flake8.main.cli
 import vulture.core
+import pylint.lint
 
 
 def get_linters():
-    return (Flake8, Vulture)
+    return Flake8, Vulture, Pylint
 
 
 class Flake8(Linter):
@@ -72,3 +73,22 @@ class Vulture(Linter):
         matches = self.patt.finditer(self.f.read())
         self.status_code = 1 if matches else 0
         self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
+
+
+class Pylint(Linter):
+    def __init__(self):
+        super().__init__()
+        self.f = io.StringIO()
+
+    def run(self, files):
+        args = ["--json"] + files
+        with contextlib.redirect_stdout(self.f):
+            pylint.lint.Run(args, exit=False)
+        self.f.seek(0)
+
+        text = self.f.read()
+        self.status_code = 1 if text.strip() else 0
+
+        data = json.loads(text)
+        print(data)
+        self.hook(data)
