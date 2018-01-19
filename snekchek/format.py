@@ -16,5 +16,5 @@ def pylint_format(data):
             print(f"File: {row['path']}")
             last_path = row['path']
 
-        print(f"{row['message-id'][0]}:{row['line']:>3}, {row['column']:>2}: ""
+        print(f"{row['message-id'][0]}:{row['line']:>3}, {row['column']:>2}: "
               f"{row['message']} ({row['symbol']})")
