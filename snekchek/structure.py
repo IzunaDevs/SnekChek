@@ -35,11 +35,13 @@ class CheckHandler:
         self.current = ''
         self.json = out_json
 
+        self.indent = 4 if "--debug" in sys.argv else None
+
         self.files = get_py_files(check_dir)
 
     def exit(self):
         if self.json:
-            print(json.dumps(self.logs, indent=4))
+            print(json.dumps(self.logs, indent=self.indent))
 
         else:
             for name, log in self.logs.items():
