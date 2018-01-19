@@ -56,7 +56,7 @@ class Vulture(Linter):
 
     def run(self, files):
         vult = vulture.core.Vulture(False if self.conf.get("verbose", 'false') == 'false' else True)
-        vult.scavenge(files, [x.strip() for x in self.conf.get("exclude").split(",")]
+        vult.scavenge(files, [x.strip() for x in self.conf.get("exclude").split(",")])
         with contextlib.redirect_stdout(self.f):
             vult.report(int(self.conf.get("min-confidence", 60)),
                         False if self.conf.get("sort-by-size", 'false') == 'false' else True)
