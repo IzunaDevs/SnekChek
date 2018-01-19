@@ -43,7 +43,7 @@ class CheckHandler:
 
         else:
             for name, log in self.logs.items():
-                if self.parser[name].get("quiet"):
+                if if not log or self.parser[name].get("quiet"):
                     continue
 
                 print(f"[[{name}]]")
