@@ -4,7 +4,14 @@ This file:
 - flake8
 - flake8-bugbear (ext)
 - flake8-import-order (ext)
+- flake8-isort (ext)
 - flake8-mypy (ext)
+- flake8-docstrings (ext)
+- flake8-todo (ext)
+- flake8-requirements (ext)
+- flake8-string-format (ext)
+- flake8-tidy-import (ext)
+- flake8-bandit (ext, bandit)
 - pylint
 - vulture
 - pyroma
@@ -35,7 +42,7 @@ class Flake8(Linter):
     def run(self, files):
         with contextlib.redirect_stdout(self.f):
             try:
-                sett = ["--config", self.confpath]
+                sett = [f"--config={self.confpath}", f"--mypy-config={self.confpath}", "--no-isort-config"]
                 sett.extend(files)
                 flake8.main.cli.main(sett)
             except SystemExit:
