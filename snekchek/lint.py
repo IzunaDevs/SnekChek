@@ -81,7 +81,7 @@ class Pylint(Linter):
         self.f = io.StringIO()
 
     def run(self, files):
-        args = ["--json"] + files
+        args = ["-f", "json"] + files
         with contextlib.redirect_stdout(self.f):
             pylint.lint.Run(args, exit=False)
         self.f.seek(0)
