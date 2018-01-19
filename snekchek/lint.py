@@ -90,6 +90,5 @@ class Pylint(Linter):
         text = self.f.read()
         self.status_code = 1 if text.strip() else 0
 
-        data = json.loads(text)
-        print(data)
+        data = json.loads(text) if text.strip() else []
         self.hook(data)
