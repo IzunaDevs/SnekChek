@@ -43,12 +43,11 @@ class CheckHandler:
 
         else:
             for name, log in self.logs.items():
-                if if not log or self.parser[name].get("quiet"):
+                if not log or self.parser[name].get("quiet"):
                     continue
 
                 print(f"[[{name}]]")
                 getattr(snekchek.format, name+"_format")(log)
-                print("\n")
 
         sys.exit(self.status_code)
 
