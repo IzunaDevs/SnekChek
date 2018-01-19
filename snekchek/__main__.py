@@ -4,7 +4,6 @@ Linter/Styler/Checker combined for:
 - flake8
 - flake8-bugbear (ext)
 - flake8-import-order (ext)
-- flake8-isort (ext)
 - flake8-mypy (ext)
 - flake8-docstrings (ext)
 - flake8-todo (ext)
@@ -12,6 +11,7 @@ Linter/Styler/Checker combined for:
 - flake8-string-format (ext)
 - flake8-tidy-import (ext)
 - flake8-bandit (ext, bandit)
+- flake8-isort (ext, isort)
 - pylint
 - yapf
 - isort
@@ -31,8 +31,15 @@ Implemented:
 - flake8-import-order (ext)
 - flake8-mypy (ext)
 - flake8-docstrings (ext)
-- flake8-future (ext)
-
+- flake8-todo (ext)
+- flake8-requirements (ext)
+- flake8-string-format (ext)
+- flake8-tidy-import (ext)
+- flake8-bandit (ext, bandit)
+- flake8-isort (ext, isort)
+- isort
+- bandit
+- vulture
 """
 
 import argparse

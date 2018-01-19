@@ -18,6 +18,7 @@ sections=FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER
 import_heading_stdlib=Stdlib
 import_heading_thirdparty=External Libraries
 import_heading_firstparty=Snekchek
+atomic=true
 
 [vulture]
 min-confidence=60
