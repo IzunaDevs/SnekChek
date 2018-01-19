@@ -48,7 +48,8 @@ class Flake8(Linter):
 
 class Vulture(Linter):
     patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+): "
-                      r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') \((?P<conf>[0-9]+)% confidence")
+                      r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
+                      r"\((?P<conf>[0-9]+)% confidence")
 
     def __init__(self):
         super().__init__()

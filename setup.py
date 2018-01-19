@@ -16,7 +16,7 @@ with open("README.md") as readme, open("requirements.txt") as requirements:
         install_requires=requirements.readlines(),
         entry_points={
             "console_scripts": [
-                "snekchek = snekchek.main:main"
+                "snekchek = snekchek.__main__:main"
             ]
         }
     )

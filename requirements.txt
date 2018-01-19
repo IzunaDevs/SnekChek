@@ -1,7 +1,17 @@
 flake8
 flake8-bugbear
 flake8-import-order
+flake8-import-style
 flake8-mypy
+flake8-docstrings
+flake8-regex
+flake8-todo
+flake8-snippets
+flake8-requirements
+flake8-string-format
+flake8-tidy-imports
+flake8-bandit
+
 pyroma
 pylint
 vulture
