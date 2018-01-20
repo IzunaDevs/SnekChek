@@ -92,7 +92,7 @@ class Pylint(Linter):
 class Pyroma(Linter):
     def run(self, _):
         file = io.StringIO()
-        with contextlib.redirect_stdout(file):
+        with contextlib.redirect_stdout(file), contextlib.redirect_stderr(io.StringIO()):
             # Import pyroma here because it uses logging and sys.stdout
             import pyroma  # noqa pylint: disable=all
             pyroma.run('directory', '.')
