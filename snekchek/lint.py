@@ -60,7 +60,7 @@ class Vulture(Linter):
                       r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
                       r"\((?P<conf>[0-9]+)% confidence")
 
-    def run(self, files):
+    def run(self, files: list) -> None:
         vult = vulture.core.Vulture(
             False if self.conf.get("verbose", 'false') == 'false' else True)
         vult.scavenge(files, [x.strip() for x in self.conf.get("exclude", '').split(",")])
@@ -75,7 +75,7 @@ class Vulture(Linter):
 
 
 class Pylint(Linter):
-    def run(self, files: list) -> None
+    def run(self, files: list) -> None:
         args = ["-f", "json"] + files
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
@@ -90,7 +90,7 @@ class Pylint(Linter):
 
 
 class Pyroma(Linter):
-    def run(self, _: list) -> None
+    def run(self, _: list) -> None:
         file = io.StringIO()
         with contextlib.redirect_stdout(file), contextlib.redirect_stderr(io.StringIO()):
             # Import pyroma here because it uses logging and sys.stdout
