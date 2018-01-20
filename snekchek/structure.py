@@ -6,7 +6,7 @@ import json
 import os
 import sys
 
-# Snekchek
+# External Libraries
 from snekchek.baseconfig import config
 import snekchek.format
 

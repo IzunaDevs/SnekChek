@@ -14,8 +14,6 @@ import io
 
 # External Libraries
 import isort
-
-# Snekchek
 from snekchek.structure import Linter
 
 
@@ -51,6 +49,8 @@ class ISort(Linter):
                         sort._show_diff(file.read())  # pylint: disable=protected-access
                     out.seek(0)
                     diff = out.read()
-                res.append(diff)
+
+                if diff.strip():
+                    res.append(diff.strip())
 
         self.hook(res)

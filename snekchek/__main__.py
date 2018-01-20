@@ -48,7 +48,7 @@ Implemented:
 # Stdlib
 import argparse
 
-# Snekchek
+# External Libraries
 from snekchek.lint import get_linters
 from snekchek.secure import get_security
 from snekchek.structure import CheckHandler

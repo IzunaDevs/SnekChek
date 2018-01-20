@@ -27,10 +27,8 @@ import re
 # External Libraries
 import flake8.main.cli
 import pylint.lint
-import vulture.core
-
-# Snekchek
 from snekchek.structure import Linter
+import vulture.core
 
 
 def get_linters():
@@ -52,7 +50,7 @@ class Flake8(Linter):
             except SystemExit:
                 print("aaa")
         file.seek(0)
-        matches = self.patt.finditer(file.read())
+        matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
         self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
 
@@ -71,7 +69,7 @@ class Vulture(Linter):
             vult.report(int(self.conf.get("min-confidence", 60)),
                         False if self.conf.get("sort-by-size", 'false') == 'false' else True)
         file.seek(0)
-        matches = self.patt.finditer(file.read())
+        matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
         self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
 
@@ -107,19 +105,24 @@ class Pyroma(Linter):
         lines.pop(0)
         lines.pop(0)
 
-        data = {}
+        data = {'modules': {}}
 
         module = lines.pop(0)[6:].strip()
-        data[module] = []
+        data['modules'][module] = []
         lines.pop(0)
-        line = lines.pop(0)
-        while line != "-" * 30:
-            data[module].append(line)
+        if len(lines) >= 6:
             line = lines.pop(0)
+            while line != "-" * 30:
+                data['modules'][module].append(line)
+                line = lines.pop(0)
 
-        data['rating'] = int(lines.pop(0)[14:-3])
+        rating = lines.pop(0)
+        data['rating'] = int(rating[14:-3])
         data['rating_word'] = lines.pop(0)
 
         self.status_code = 0 if data['rating'] == 10 else 1
+
+        if data['rating'] == 10:
+            data = []
 
         self.hook(data)

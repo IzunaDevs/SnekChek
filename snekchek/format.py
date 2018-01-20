@@ -21,7 +21,7 @@ def pylint_format(data):
 
 
 def pyroma_format(data):
-    for row in list(data.values())[0]:
+    for row in list(data['modules'].values())[0]:
         print(row)
 
 
