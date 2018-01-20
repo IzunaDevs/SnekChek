@@ -69,7 +69,7 @@ class CheckHandler:
 
         sys.exit(self.status_code)
 
-    def run_linter(self, linter: Linter) -> None:
+    def run_linter(self, linter) -> None:
         self.current = linter.name
 
         if linter.name not in self.parser["all"]["linters"]:
