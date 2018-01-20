@@ -18,3 +18,7 @@ def pylint_format(data):
 
         print(f"{row['message-id'][0]}:{row['line']:>3}, {row['column']:>2}: "
               f"{row['message']} ({row['symbol']})")
+
+
+def pyroma_format(data):
+    print(data)

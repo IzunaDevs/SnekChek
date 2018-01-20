@@ -1,5 +1,7 @@
 """
-Linter/Styler/Checker combined for:
+Linter/Styler/Checker combined for linters.
+
+Linters supported:
 
 - flake8
 - flake8-bugbear (ext)
@@ -40,6 +42,7 @@ Implemented:
 - isort
 - bandit
 - vulture
+- pylint
 """
 
 import argparse

@@ -27,30 +27,29 @@ from snekchek.structure import Linter
 import flake8.main.cli
 import vulture.core
 import pylint.lint
+import pyroma
 
 
 def get_linters():
-    return Flake8, Vulture, Pylint
+    return Flake8, Vulture, Pylint, Pyroma
 
 
 class Flake8(Linter):
     patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
                       r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
 
-    def __init__(self):
-        super().__init__()
-        self.f = io.StringIO()
-
     def run(self, files):
-        with contextlib.redirect_stdout(self.f):
+        file = io.StringIO()
+        with contextlib.redirect_stdout(file):
             try:
-                sett = [f"--config={self.confpath}", f"--mypy-config={self.confpath}", "--no-isort-config"]
+                sett = [f"--config={self.confpath}",
+                        f"--mypy-config={self.confpath}"]
                 sett.extend(files)
                 flake8.main.cli.main(sett)
             except SystemExit:
                 print("aaa")
-        self.f.seek(0)
-        matches = self.patt.finditer(self.f.read())
+        file.seek(0)
+        matches = self.patt.finditer(file.read())
         self.status_code = 1 if matches else 0
         self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
 
@@ -60,36 +59,72 @@ class Vulture(Linter):
                       r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
                       r"\((?P<conf>[0-9]+)% confidence")
 
-    def __init__(self):
-        super().__init__()
-        self.f = io.StringIO()
-
     def run(self, files):
         vult = vulture.core.Vulture(
             False if self.conf.get("verbose", 'false') == 'false' else True)
         vult.scavenge(files, [x.strip() for x in self.conf.get("exclude", '').split(",")])
-        with contextlib.redirect_stdout(self.f):
+        file = io.StringIO()
+        with contextlib.redirect_stdout(file):
             vult.report(int(self.conf.get("min-confidence", 60)),
                         False if self.conf.get("sort-by-size", 'false') == 'false' else True)
-        self.f.seek(0)
-        matches = self.patt.finditer(self.f.read())
+        file.seek(0)
+        matches = self.patt.finditer(file.read())
         self.status_code = 1 if matches else 0
         self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
 
 
 class Pylint(Linter):
-    def __init__(self):
-        super().__init__()
-        self.f = io.StringIO()
-
     def run(self, files):
         args = ["-f", "json"] + files
-        with contextlib.redirect_stdout(self.f):
+        file = io.StringIO()
+        with contextlib.redirect_stdout(file):
             pylint.lint.Run(args, exit=False)
-        self.f.seek(0)
+        file.seek(0)
 
-        text = self.f.read()
+        text = file.read()
         self.status_code = 1 if text.strip() else 0
 
         data = json.loads(text) if text.strip() else []
+        self.hook(data)
+
+
+class Pyroma(Linter):
+    def run(self, _):
+        file = io.StringIO()
+        with contextlib.redirect_stdout(file):
+            pyroma.run('directory', '.')
+        file.seek(0)
+
+        text = file.read()
+
+        lines = text.split("\n")
+
+        lines.pop(0)
+        lines.pop(0)
+
+        data = {}
+
+        module = lines.pop(0)[6:].strip()
+        data[module] = []
+        lines.pop(0)
+        line = lines.pop(0)
+        while line != "-" * 31:
+            data[module].append(line)
+            line = lines.pop(0)
+
+        data['rating'] = int(lines.pop(0)[14:-3])
+        data['rating_word'] = lines.pop(0)
+
+
+        # ------------------------------
+        # checking .
+        # Found ...
+        # ------------------------------
+        # errors
+        # ...
+        # ------------------------------
+        # Final rating: X/10
+        # ...
+        # ------------------------------
+
         self.hook(data)

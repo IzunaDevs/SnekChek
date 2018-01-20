@@ -7,10 +7,12 @@ from snekchek.baseconfig import config
 import snekchek.format
 
 
-def flatten(l: list) -> list:
+def flatten(nested_list: list) -> list:
     """ Flattens a list, ignore all the lambdas """
     return list(sorted(filter(lambda y: y is not None,
-                              list(map(lambda x: l.extend(x) if isinstance(x, list) else x, l)))))  # noqa: T484,E501 pylint: disable=line-too-long
+                              list(map(lambda x: (nested_list.extend(x)
+                                                  if isinstance(x, list) else x),
+                                       nested_list)))))
 
 
 def get_py_files(dir_name: str) -> list:
@@ -29,7 +31,7 @@ class CheckHandler:
         self.parser["DEFAULT"] = config
 
         self.parser.read(file)
-        self.fn = file
+        self.fn = file  # pylint: disable=invalid-name
         self.status_code = 0
         self.logs = {}
         self.current = ''
@@ -40,7 +42,9 @@ class CheckHandler:
         self.files = get_py_files(check_dir)
 
     def exit(self):
+        total = sum(len(logs) for logs in self.logs.values())
         if self.json:
+            self.logs['total'] = total
             print(json.dumps(self.logs, indent=self.indent))
 
         else:
@@ -50,6 +54,8 @@ class CheckHandler:
 
                 print(f"[[{name}]]")
                 getattr(snekchek.format, name+"_format")(log)
+
+            print("Total:", total)
 
         sys.exit(self.status_code)
 

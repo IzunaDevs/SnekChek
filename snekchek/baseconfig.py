@@ -3,7 +3,7 @@ import os
 
 __all__ = ("config",)
 
-config = {
+config = {  # pylint: disable=invalid-name
     "all": {
         "linters": ["flake8", "pylint", "yapf", "isort", "pyroma",
                     "safety", "bandit", "dodgy", "pydocstyle",
@@ -19,4 +19,10 @@ config = {
     },
     "yapf": {
     },
+    "isort": {
+    },
+    "bandit": {
+    },
+    "mypy": {
+    }
 }
