@@ -1,5 +1,5 @@
+# Stdlib
 import os
-
 
 __all__ = ("config",)
 
@@ -20,9 +20,13 @@ config = {  # pylint: disable=invalid-name
     "yapf": {
     },
     "isort": {
+        "line_length": 79,
+        "inplace": 'false'
     },
     "bandit": {
     },
     "mypy": {
-    }
+    },
+    "pyroma": {
+    },
 }

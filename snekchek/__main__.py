@@ -45,12 +45,14 @@ Implemented:
 - pylint
 """
 
+# Stdlib
 import argparse
-from snekchek.structure import CheckHandler
 
+# Snekchek
 from snekchek.lint import get_linters
-from snekchek.style import get_stylers
 from snekchek.secure import get_security
+from snekchek.structure import CheckHandler
+from snekchek.style import get_stylers
 
 
 def run_main(args):

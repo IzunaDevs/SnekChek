@@ -1,16 +1,20 @@
+""" Common classes and utility functions. """
+
+# Stdlib
 import configparser
 import json
 import os
 import sys
 
+# Snekchek
 from snekchek.baseconfig import config
 import snekchek.format
 
 
 def flatten(nested_list: list) -> list:
-    """ Flattens a list, ignore all the lambdas """
+    """ Flattens a list, ignore all the lambdas. """
     return list(sorted(filter(lambda y: y is not None,
-                              list(map(lambda x: (nested_list.extend(x)
+                              list(map(lambda x: (nested_list.extend(x)  # noqa: T484
                                                   if isinstance(x, list) else x),
                                        nested_list)))))
 
@@ -28,7 +32,7 @@ def get_py_files(dir_name: str) -> list:
 class CheckHandler:
     def __init__(self, file, out_json, check_dir="."):
         self.parser = configparser.ConfigParser()
-        self.parser["DEFAULT"] = config
+        self.parser.update(config)
 
         self.parser.read(file)
         self.fn = file  # pylint: disable=invalid-name
@@ -53,8 +57,10 @@ class CheckHandler:
                     continue
 
                 print(f"[[{name}]]")
-                getattr(snekchek.format, name+"_format")(log)
+                getattr(snekchek.format, name + "_format")(log)
+                print("\n")
 
+            print("-" * 30)
             print("Total:", total)
 
         sys.exit(self.status_code)

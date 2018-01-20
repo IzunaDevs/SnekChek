@@ -23,3 +23,8 @@ def pylint_format(data):
 def pyroma_format(data):
     for row in list(data.values())[0]:
         print(row)
+
+
+def isort_format(data):
+    for diff in data:
+        print(diff)

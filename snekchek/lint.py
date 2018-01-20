@@ -1,10 +1,11 @@
 """
-This file:
+This file contains linters.
+
+Linters included:
 
 - flake8
 - flake8-bugbear (ext)
 - flake8-import-order (ext)
-- flake8-isort (ext)
 - flake8-mypy (ext)
 - flake8-docstrings (ext)
 - flake8-todo (ext)
@@ -17,16 +18,19 @@ This file:
 - pyroma
 """
 
+# Stdlib
 import contextlib
 import io
 import json
 import re
 
-from snekchek.structure import Linter
-
+# External Libraries
 import flake8.main.cli
-import vulture.core
 import pylint.lint
+import vulture.core
+
+# Snekchek
+from snekchek.structure import Linter
 
 
 def get_linters():
@@ -92,7 +96,7 @@ class Pyroma(Linter):
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
             # Import pyroma here because it uses logging and sys.stdout
-            import pyroma
+            import pyroma  # noqa pylint: disable=all
             pyroma.run('directory', '.')
         file.seek(0)
 
@@ -115,5 +119,7 @@ class Pyroma(Linter):
 
         data['rating'] = int(lines.pop(0)[14:-3])
         data['rating_word'] = lines.pop(0)
+
+        self.status_code = 0 if data['rating'] == 10 else 1
 
         self.hook(data)
