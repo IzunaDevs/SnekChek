@@ -14,6 +14,9 @@ config = {  # pylint: disable=invalid-name
         "TWINE_PASSWORD": os.environ.get("TWINE_PASSWORD", "abc")
     },
     "flake8": {
+        "max-line-length": 79,
+        "exclude": ["build", "dist"],
+        "ignore": ["D100", "D101"]
     },
     "pylint": {
     },
@@ -21,7 +24,8 @@ config = {  # pylint: disable=invalid-name
     },
     "isort": {
         "line_length": 79,
-        "inplace": 'false'
+        "inplace": 'false',
+        "indent": '    '
     },
     "bandit": {
     },
@@ -29,4 +33,7 @@ config = {  # pylint: disable=invalid-name
     },
     "pyroma": {
     },
+    "vulture": {
+        "min-confidence": 60
+    }
 }

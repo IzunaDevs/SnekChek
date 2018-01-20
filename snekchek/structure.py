@@ -34,6 +34,10 @@ class CheckHandler:
         self.parser = configparser.ConfigParser()
         self.parser.update(config)
 
+        # Only while finalizing snekrc!
+        # with open(".snekrc.example", "w") as file2:
+        #     self.parser.write(file2)
+
         self.parser.read(file)
         self.fn = file  # pylint: disable=invalid-name
         self.status_code = 0
@@ -87,10 +91,10 @@ class Linter:
         self.confpath = None
         self.conf = None
 
-    def add_output_hook(self, func):
+    def add_output_hook(self, func) -> None:
         self.hook = func
 
-    def set_config(self, confpath, section):
+    def set_config(self, confpath: str, section) -> None:
         self.confpath = confpath
         self.conf = section
 

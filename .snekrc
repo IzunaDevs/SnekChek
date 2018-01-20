@@ -23,6 +23,6 @@ import_heading_firstparty=Snekchek
 force_sort_within_sections=true
 
 [vulture]
-min-confidence=90
+min-confidence=0
 
 [mypy]
