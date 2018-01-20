@@ -29,3 +29,6 @@ min-confidence=60
 
 
 [pylint]
+
+
+[pyroma]

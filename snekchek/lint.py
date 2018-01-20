@@ -27,11 +27,10 @@ from snekchek.structure import Linter
 import flake8.main.cli
 import vulture.core
 import pylint.lint
-import pyroma
 
 
 def get_linters():
-    return Flake8, Vulture, Pylint, Pyroma
+    return Vulture, Pylint, Pyroma, Flake8
 
 
 class Flake8(Linter):
@@ -92,6 +91,8 @@ class Pyroma(Linter):
     def run(self, _):
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
+            # Import pyroma here because it uses logging and sys.stdout
+            import pyroma
             pyroma.run('directory', '.')
         file.seek(0)
 
@@ -108,23 +109,11 @@ class Pyroma(Linter):
         data[module] = []
         lines.pop(0)
         line = lines.pop(0)
-        while line != "-" * 31:
+        while line != "-" * 30:
             data[module].append(line)
             line = lines.pop(0)
 
         data['rating'] = int(lines.pop(0)[14:-3])
         data['rating_word'] = lines.pop(0)
-
-
-        # ------------------------------
-        # checking .
-        # Found ...
-        # ------------------------------
-        # errors
-        # ...
-        # ------------------------------
-        # Final rating: X/10
-        # ...
-        # ------------------------------
 
         self.hook(data)
