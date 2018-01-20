@@ -30,7 +30,7 @@ def get_py_files(dir_name: str) -> list:
 
 
 class CheckHandler:
-    def __init__(self, file, out_json, check_dir="."):
+    def __init__(self, file: str, out_json: bool, check_dir: str = "."):
         self.parser = configparser.ConfigParser()
         self.parser.update(config)
 
@@ -49,7 +49,7 @@ class CheckHandler:
 
         self.files = get_py_files(check_dir)
 
-    def exit(self):
+    def exit(self) -> None:
         total = sum(len(logs) for logs in self.logs.values())
         if self.json:
             self.logs['total'] = total
@@ -69,7 +69,7 @@ class CheckHandler:
 
         sys.exit(self.status_code)
 
-    def run_linter(self, linter):
+    def run_linter(self, linter: Linter) -> None:
         self.current = linter.name
 
         if linter.name not in self.parser["all"]["linters"]:
@@ -80,7 +80,7 @@ class CheckHandler:
         linter.run(self.files)
         self.status_code = self.status_code or linter.status_code
 
-    def out_func(self, data):
+    def out_func(self, data) -> None:
         self.logs[self.current] = data
 
 

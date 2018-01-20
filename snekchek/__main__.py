@@ -55,7 +55,7 @@ from snekchek.structure import CheckHandler
 from snekchek.style import get_stylers
 
 
-def run_main(args):
+def run_main(args) -> None:
     handler = CheckHandler(file=args.config_file, out_json=args.json)
 
     for linter in get_linters():
@@ -70,7 +70,7 @@ def run_main(args):
     handler.exit()
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--json", help="output in JSON format", action="store_true", default=False)
     parser.add_argument("--config-file", help="Select config file to use", default=".snekrc")

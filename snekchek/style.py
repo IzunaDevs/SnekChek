@@ -17,12 +17,12 @@ import isort
 from snekchek.structure import Linter
 
 
-def get_stylers():
+def get_stylers() -> list:
     return [ISort]
 
 
 class ISort(Linter):
-    def run(self, files):
+    def run(self, files: list) -> None:
         sett = dict(**self.conf)
         sett['line_length'] = int(sett['line_length'])
         sett['sections'] = sett['sections'].split(",")

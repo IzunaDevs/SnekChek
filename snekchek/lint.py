@@ -31,7 +31,7 @@ from snekchek.structure import Linter
 import vulture.core
 
 
-def get_linters():
+def get_linters() -> list:
     return Vulture, Pylint, Pyroma, Flake8
 
 
@@ -39,7 +39,7 @@ class Flake8(Linter):
     patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
                       r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
 
-    def run(self, files):
+    def run(self, files: list) -> None:
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
             try:
@@ -75,7 +75,7 @@ class Vulture(Linter):
 
 
 class Pylint(Linter):
-    def run(self, files):
+    def run(self, files: list) -> None
         args = ["-f", "json"] + files
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
@@ -90,7 +90,7 @@ class Pylint(Linter):
 
 
 class Pyroma(Linter):
-    def run(self, _):
+    def run(self, _: list) -> None
         file = io.StringIO()
         with contextlib.redirect_stdout(file), contextlib.redirect_stderr(io.StringIO()):
             # Import pyroma here because it uses logging and sys.stdout

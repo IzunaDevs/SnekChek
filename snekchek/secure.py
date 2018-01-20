@@ -1,4 +1,4 @@
 
 
-def get_security():
+def get_security() -> list:
     return []
