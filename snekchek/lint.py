@@ -43,8 +43,7 @@ class Flake8(Linter):
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
             try:
-                sett = [f"--config={self.confpath}",
-                        f"--mypy-config={self.confpath}"]
+                sett = [f"--config={self.confpath}"]
                 sett.extend(files)
                 flake8.main.cli.main(sett)
             except SystemExit:
