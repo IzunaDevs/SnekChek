@@ -1,12 +1,14 @@
 """ Common classes and utility functions. """
 
 # Stdlib
-import configparser
 import json
 import os
 import sys
 
 # External Libraries
+import configobj
+
+# Snekchek
 from snekchek.baseconfig import config
 import snekchek.format
 
@@ -31,14 +33,9 @@ def get_py_files(dir_name: str) -> list:
 
 class CheckHandler:
     def __init__(self, file: str, out_json: bool, check_dir: str = "."):
-        self.parser = configparser.ConfigParser()
-        self.parser.update(config)
+        self.parser = config
+        self.parser.merge(configobj.ConfigObj(file))
 
-        # Only while finalizing snekrc!
-        # with open(".snekrc.example", "w") as file2:
-        #     self.parser.write(file2)
-
-        self.parser.read(file)
         self.fn = file  # pylint: disable=invalid-name
         self.status_code = 0
         self.logs = {}
@@ -57,7 +54,7 @@ class CheckHandler:
 
         else:
             for name, log in self.logs.items():
-                if not log or self.parser[name].get("quiet"):
+                if not log or self.parser[name].as_bool("quiet"):
                     continue
 
                 print(f"[[{name}]]")
@@ -72,7 +69,7 @@ class CheckHandler:
     def run_linter(self, linter) -> None:
         self.current = linter.name
 
-        if linter.name not in self.parser["all"]["linters"]:
+        if linter.name not in self.parser["all"].as_list("linters"):
             return
 
         linter.add_output_hook(self.out_func)

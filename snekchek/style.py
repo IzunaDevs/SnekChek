@@ -14,31 +14,33 @@ import io
 
 # External Libraries
 import isort
+import yapf.yapflib.yapf_api
+
+# Snekchek
 from snekchek.structure import Linter
 
 
 def get_stylers() -> list:
-    return [ISort]
+    return ISort, Yapf
 
 
 class ISort(Linter):
     def run(self, files: list) -> None:
-        sett = dict(**self.conf)
-        sett['line_length'] = int(sett['line_length'])
-        sett['sections'] = sett['sections'].split(",")
+        self.conf['line_length'] = self.conf.as_int('line_length')
+        self.conf['sections'] = self.conf.as_list('sections')
 
         res = []
 
         for filename in files:
             with contextlib.redirect_stdout(io.StringIO()):  # mute stdout
-                sort = isort.SortImports(filename, **sett)
+                sort = isort.SortImports(filename, **self.conf)
 
             if sort.skipped:
                 continue
 
             self.status_code = self.status_code or (1 if sort.incorrectly_sorted else 0)
 
-            if True if sett['inplace'] == 'true' else False:
+            if self.conf.as_bool('inplace'):
                 with open(filename, "w") as file:
                     file.write(sort.output)
 
@@ -52,5 +54,26 @@ class ISort(Linter):
 
                 if diff.strip():
                     res.append(diff.strip())
+
+        self.hook(res)
+
+
+class Yapf(Linter):
+    def run(self, files: list) -> None:
+        res = []
+
+        for file in files:
+            code, coding, changed = yapf.yapflib.yapf_api.FormatFile(file, style_config=self.confpath)
+
+            self.status_code = self.status_code or (1 if changed else 0)
+
+            if changed:
+
+                if self.conf.as_bool('inplace'):
+                    with open(file, "w") as new_file:
+                        new_file.write(code)
+
+                else:
+                    res.append(code.strip())
 
         self.hook(res)

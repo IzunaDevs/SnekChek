@@ -1,9 +1,12 @@
 # Stdlib
 import os
 
+# External Libraries
+import configobj
+
 __all__ = ("config",)
 
-config = {  # pylint: disable=invalid-name
+config = configobj.ConfigObj({  # pylint: disable=invalid-name
     "all": {
         "linters": ["flake8", "pylint", "yapf", "isort", "pyroma",
                     "safety", "bandit", "dodgy", "pydocstyle",
@@ -34,6 +37,9 @@ config = {  # pylint: disable=invalid-name
     "pyroma": {
     },
     "vulture": {
-        "min-confidence": 60
+        "min-confidence": 60,
+        "verbose": False,
+        "exclude": [],
+        "sort-by-size": False
     }
-}
+})

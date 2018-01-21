@@ -27,8 +27,10 @@ import re
 # External Libraries
 import flake8.main.cli
 import pylint.lint
-from snekchek.structure import Linter
 import vulture.core
+
+# Snekchek
+from snekchek.structure import Linter
 
 
 def get_linters() -> list:
@@ -60,13 +62,11 @@ class Vulture(Linter):
                       r"\((?P<conf>[0-9]+)% confidence")
 
     def run(self, files: list) -> None:
-        vult = vulture.core.Vulture(
-            False if self.conf.get("verbose", 'false') == 'false' else True)
-        vult.scavenge(files, [x.strip() for x in self.conf.get("exclude", '').split(",")])
+        vult = vulture.core.Vulture(self.conf.as_bool('verbose'))
+        vult.scavenge(files, [x.strip() for x in self.conf.as_list("exclude")])
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
-            vult.report(int(self.conf.get("min-confidence", 60)),
-                        False if self.conf.get("sort-by-size", 'false') == 'false' else True)
+            vult.report(self.conf.as_int("min-confidence"), self.conf.as_bool("sort-by-size"))
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0

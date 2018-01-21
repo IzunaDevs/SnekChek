@@ -44,11 +44,12 @@ Implemented:
 # Stdlib
 import argparse
 
-# External Libraries
+# Snekchek
 from snekchek.lint import get_linters
 from snekchek.secure import get_security
 from snekchek.structure import CheckHandler
 from snekchek.style import get_stylers
+from snekchek.tool import get_tools
 
 
 def run_main(args) -> None:
@@ -62,6 +63,9 @@ def run_main(args) -> None:
 
     for security in get_security():
         handler.run_linter(security())
+
+    for tool in get_tools():
+        handler.run_linter(tool())
 
     handler.exit()
 
