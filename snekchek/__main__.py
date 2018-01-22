@@ -71,7 +71,8 @@ def run_main(args) -> None:
         handler.run_linter(security())
 
     for tool in get_tools():
-        handler.run_linter(tool())
+        if tool.name == "pypi" and handler.status_code == 0:
+            handler.run_linter(tool())
 
     handler.exit()
 
