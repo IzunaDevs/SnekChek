@@ -19,7 +19,6 @@ Linters supported:
 - safety
 - bandit
 - dodgy
-- pydocstyle
 - vulture
 - pytest
 - Upload to pypi
@@ -35,10 +34,17 @@ Implemented:
 - flake8-string-format (ext)
 - flake8-tidy-import (ext)
 - flake8-bandit (ext, bandit)
+- yapf
 - isort
 - bandit
 - vulture
 - pylint
+- Upload to pypi
+
+Left to do:
+- Safety
+- Dodgy
+- Pytest
 """
 
 # Stdlib
@@ -72,8 +78,13 @@ def run_main(args) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--json", help="output in JSON format", action="store_true", default=False)
-    parser.add_argument("--config-file", help="Select config file to use", default=".snekrc")
+    parser.add_argument(
+        "--json",
+        help="output in JSON format",
+        action="store_true",
+        default=False)
+    parser.add_argument(
+        "--config-file", help="Select config file to use", default=".snekrc")
     args = parser.parse_args()
 
     run_main(args)

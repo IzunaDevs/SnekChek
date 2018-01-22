@@ -53,24 +53,35 @@ class Flake8(Linter):
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
-        self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
+        self.hook(
+            list(
+                sorted(
+                    [x.groupdict() for x in matches],
+                    key=lambda x: x["line"])))
 
 
 class Vulture(Linter):
-    patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+): "
-                      r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
-                      r"\((?P<conf>[0-9]+)% confidence")
+    patt = re.compile(
+        r"(?P<path>[^:]+):(?P<line>[0-9]+): "
+        r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
+        r"\((?P<conf>[0-9]+)% confidence")
 
     def run(self, files: list) -> None:
         vult = vulture.core.Vulture(self.conf.as_bool('verbose'))
         vult.scavenge(files, [x.strip() for x in self.conf.as_list("exclude")])
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
-            vult.report(self.conf.as_int("min-confidence"), self.conf.as_bool("sort-by-size"))
+            vult.report(
+                self.conf.as_int("min-confidence"),
+                self.conf.as_bool("sort-by-size"))
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
-        self.hook(list(sorted([x.groupdict() for x in matches], key=lambda x: x["line"])))
+        self.hook(
+            list(
+                sorted(
+                    [x.groupdict() for x in matches],
+                    key=lambda x: x["line"])))
 
 
 class Pylint(Linter):
@@ -91,7 +102,8 @@ class Pylint(Linter):
 class Pyroma(Linter):
     def run(self, _: list) -> None:
         file = io.StringIO()
-        with contextlib.redirect_stdout(file), contextlib.redirect_stderr(io.StringIO()):
+        with contextlib.redirect_stdout(file), contextlib.redirect_stderr(
+                io.StringIO()):
             # Import pyroma here because it uses logging and sys.stdout
             import pyroma  # noqa pylint: disable=all
             pyroma.run('directory', '.')

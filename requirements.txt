@@ -13,6 +13,8 @@ bandit
 dodgy
 
 pytest
+
+requests
 twine
 
 configobj

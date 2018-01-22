@@ -1,6 +1,16 @@
+# Stdlib
+import contextlib
+import io
+import subprocess  # noqa: B404
+import sys
 
-import subprocess
+# External Libraries
+import requests
 import twine.commands.upload
+
+# Snekchek
+from snekchek.misc import __version__
+from snekchek.structure import Linter
 
 
 def get_tools():
@@ -9,11 +19,22 @@ def get_tools():
 
 class Pypi(Linter):
     def run(self, _: list) -> None:
-        proc = subprocess.Popen([sys.executable, "setup.py", "sdist", "bdist"])
-        proc.wait()
-        twine.commands.upload.upload(["dist/*"], self.conf.get("TWINE_REPOSITORY"),
-                                     self.conf.as_bool("sign", False), self.conf.get("identity"),
-                                     self.conf["TWINE_USERNAME"], self.conf["TWINE_PASSWORD"],
-                                     self.conf.get("comment"), self.confpath,
-                                     self.conf.get("skip-existing", True), None, None,
-                                     self.conf.get("TWINE_REPOSITORY_URL"))
+        try:
+            with contextlib.redirect_stdout(io.StringIO()), \
+                    contextlib.redirect_stderr(io.StringIO()):
+                proc = subprocess.Popen(  # noqa: B603
+                    [sys.executable, "setup.py", "sdist", "bdist"],
+                    stdout=subprocess.DEVNULL)
+                proc.wait()
+                twine.commands.upload.upload(
+                    [f"dist/*{__version__}*"], self.conf["TWINE_REPOSITORY"],
+                    self.conf.as_bool("sign"), self.conf.get("identity"),
+                    self.conf["TWINE_USERNAME"], self.conf["TWINE_PASSWORD"],
+                    self.conf.get("comment"),
+                    self.conf.get("sign-with"), self.confpath,
+                    self.conf.get("skip-existing", True), None, None, None)
+            self.hook([])
+
+        except requests.exceptions.HTTPError as err:
+            self.status_code = 1
+            self.hook([err])

@@ -38,7 +38,9 @@ class ISort(Linter):
             if sort.skipped:
                 continue
 
-            self.status_code = self.status_code or (1 if sort.incorrectly_sorted else 0)
+            self.status_code = self.status_code or (1
+                                                    if sort.incorrectly_sorted
+                                                    else 0)
 
             if self.conf.as_bool('inplace'):
                 with open(filename, "w") as file:
@@ -63,7 +65,8 @@ class Yapf(Linter):
         res = []
 
         for file in files:
-            code, coding, changed = yapf.yapflib.yapf_api.FormatFile(file, style_config=self.confpath)
+            code, _, changed = yapf.yapflib.yapf_api.FormatFile(
+                file, style_config=self.confpath)
 
             self.status_code = self.status_code or (1 if changed else 0)
 

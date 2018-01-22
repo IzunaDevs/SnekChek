@@ -8,18 +8,13 @@ twine_password = abc
 [flake8]
 max-line-length = 79
 
-[pylint]
-
 [yapf]
 
 [isort]
 line_length = 79
-inplace = false
 indent = '    '
 
 [bandit]
-
-[mypy]
 
 [pyroma]
 

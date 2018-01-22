@@ -4,7 +4,6 @@ from setuptools import setup, find_packages
 # Snekchek
 from snekchek import misc
 
-
 if __name__ == '__main__':
     with open("README.md") as readme, open("requirements.txt") as requirements, \
             open("LICENSE") as license:  # pylint: disable=redefined-builtin
@@ -23,14 +22,14 @@ if __name__ == '__main__':
             packages=find_packages(),
             install_requires=requirements.readlines(),
             entry_points={
-                "console_scripts": [
-                    "snekchek = snekchek.__main__:main"
-                ]
+                "console_scripts": ["snekchek = snekchek.__main__:main"]
             },
-            keywords=["lint", "python", "pylint", "flake8", "isort", "snekchek", "snekrc"],
+            keywords=[
+                "lint", "python", "pylint", "flake8", "isort", "snekchek",
+                "snekrc"
+            ],
             classifiers=[
-                "Development Status :: 3 - Alpha",
-                "Environment :: Console",
+                "Development Status :: 3 - Alpha", "Environment :: Console",
                 "Intended Audience :: Developers",
                 "License :: OSI Approved :: MIT License",
                 "Operating System :: OS Independent",
@@ -39,5 +38,4 @@ if __name__ == '__main__':
                 "Topic :: Software Development :: Quality Assurance",
                 "Topic :: Software Development :: Libraries :: Python Modules"
             ],
-            python_requires=">=3.6"
-        )
+            python_requires=">=3.6")
