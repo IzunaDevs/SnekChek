@@ -33,8 +33,8 @@ class Pypi(Linter):
                     self.conf.get("comment"),
                     self.conf.get("sign-with"), self.confpath,
                     self.conf.get("skip-existing", True), None, None, None)
-            self.hook([])
 
         except requests.exceptions.HTTPError as err:
-            self.status_code = 1
-            self.hook([err])
+            print(err)
+
+        self.hook([])
