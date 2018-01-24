@@ -59,10 +59,9 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
 
         handler.run_linter(tool)
 
-    if not do_exit:
-        return handler.status_code
-
-    handler.exit()
+    if do_exit:
+        handler.exit()
+    return handler.status_code
 
 
 def main() -> None:
