@@ -23,7 +23,7 @@ class Pypi(Linter):
             with contextlib.redirect_stdout(io.StringIO()), \
                     contextlib.redirect_stderr(io.StringIO()):
                 proc = subprocess.Popen(  # noqa: B603
-                    [sys.executable, "setup.py", "sdist", "bdist"],
+                    [sys.executable, "setup.py", "sdist", "bdist_wheel"],
                     stdout=subprocess.DEVNULL)
                 proc.wait()
                 twine.commands.upload.upload(

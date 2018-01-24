@@ -15,6 +15,7 @@ dodgy
 pytest
 
 requests
+wheel
 twine
 
 configobj
