@@ -30,10 +30,10 @@ def get_tools():
 
 class Pytest(Linter):
     def run(self, _: list) -> None:
-        with contextlib.redirect_stdout(io.StringIO()), \
-                contextlib.redirect_stderr(io.StringIO()):
-            exitcode = pytest.main(
-                ["--json=.log.json", "-qqqq", "-c", self.confpath])
+        # with contextlib.redirect_stdout(io.StringIO()), \
+        #         contextlib.redirect_stderr(io.StringIO()):
+        exitcode = pytest.main(
+            ["--json=.log.json", "-qqqq", "-c", self.confpath])
         self.status_code = exitcode
 
         with open(".log.json") as file:
