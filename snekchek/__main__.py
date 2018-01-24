@@ -61,6 +61,7 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
 
     if do_exit:
         handler.exit()
+        return
 
     else:
         return handler.status_code
