@@ -1,3 +1,11 @@
+"""
+Tools to run over code that don't lint and don't format
+
+Currently included:
+- Pytest
+- Upload to pypi (twine)
+"""
+
 # Stdlib
 import contextlib
 import io
@@ -23,8 +31,9 @@ def get_tools():
 class Pytest(Linter):
     def run(self, _: list) -> None:
         with contextlib.redirect_stdout(io.StringIO()), \
-             contextlib.redirect_stderr(io.StringIO()):
-            exitcode = pytest.main(["--json=.log.json", "-qqqq", "-c", ".snekrc"])
+                contextlib.redirect_stderr(io.StringIO()):
+            exitcode = pytest.main(
+                ["--json=.log.json", "-qqqq", "-c", self.confpath])
         self.status_code = exitcode
 
         with open(".log.json") as file:

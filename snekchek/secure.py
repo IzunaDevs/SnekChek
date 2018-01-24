@@ -1,3 +1,11 @@
+"""
+Checkers for security issues in the project.
+
+Checkers included:
+- Safety
+- Dodgy
+"""
+
 # Stdlib
 import contextlib
 import io

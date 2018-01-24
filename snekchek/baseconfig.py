@@ -1,3 +1,5 @@
+"""Base config for entry points."""
+
 # Stdlib
 import os
 

@@ -22,30 +22,6 @@ Linters supported:
 - vulture
 - pytest
 - Upload to pypi
-
-
-Implemented:
-- flake8
-- flake8-bugbear (ext)
-- flake8-import-order (ext)
-- flake8-docstrings (ext)
-- flake8-todo (ext)
-- flake8-requirements (ext)
-- flake8-string-format (ext)
-- flake8-tidy-import (ext)
-- flake8-bandit (ext, bandit)
-- yapf
-- isort
-- bandit (flake8 plugin)
-- Safety
-- Dodgy
-- vulture
-- pylint
-- pyroma
-- Upload to pypi
-
-Left to do:
-- Pytest
 """
 
 # Stdlib
@@ -59,7 +35,12 @@ from snekchek.style import get_stylers
 from snekchek.tool import get_tools
 
 
-def run_main(args) -> None:
+def run_main(args: argparse.Namespace, do_exit=True) -> None:
+    """Runs the checks and exits.
+
+    To extend this tool, use this function and set do_exit to False
+    to get returned the status code.
+    """
     handler = CheckHandler(file=args.config_file, out_json=args.json)
 
     for linter in get_linters():
@@ -78,10 +59,15 @@ def run_main(args) -> None:
 
         handler.run_linter(tool)
 
-    handler.exit()
+    if do_exit:
+        handler.exit()
+
+    else:
+        return handler.status_code
 
 
 def main() -> None:
+    """Main entry point for console commands."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--json",

@@ -14,7 +14,7 @@ import snekchek.format
 
 
 def flatten(nested_list: list) -> list:
-    """ Flattens a list, ignore all the lambdas. """
+    """Flattens a list, ignore all the lambdas."""
     return list(sorted(filter(lambda y: y is not None,
                               list(map(lambda x: (nested_list.extend(x)  # noqa: T484
                                                   if isinstance(x, list) else x),
@@ -22,6 +22,7 @@ def flatten(nested_list: list) -> list:
 
 
 def get_py_files(dir_name: str) -> list:
+    """Get all .py files."""
     return flatten([
         x for x in [[f"{path}/{f}" for f in files if f.endswith(".py")]
                     for path, _, files in os.walk(dir_name)
@@ -45,6 +46,7 @@ class CheckHandler:
         self.files = get_py_files(check_dir)
 
     def exit(self) -> None:
+        """Raise SystemExit with correct status code and output logs."""
         total = sum(len(logs) for logs in self.logs.values())
         if self.json:
             self.logs['total'] = total
@@ -65,6 +67,7 @@ class CheckHandler:
         sys.exit(self.status_code)
 
     def run_linter(self, linter) -> None:
+        """Run a checker class"""
         self.current = linter.name
 
         if linter.name not in self.parser["all"].as_list("linters"):
@@ -80,6 +83,8 @@ class CheckHandler:
 
 
 class Linter:
+    """Common shared class for all linters/stylers/tools"""
+
     def __init__(self):
         self.status_code = 0
         self.hook = None

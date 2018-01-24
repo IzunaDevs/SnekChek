@@ -2,10 +2,8 @@
 This file contains Style checkers.
 
 Stylers included:
-
 - isort
 - yapf
-- pydocstyle
 """
 
 # Stdlib

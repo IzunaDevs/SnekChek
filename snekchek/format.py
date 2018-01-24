@@ -1,3 +1,6 @@
+"""Formatting functions for each linter"""
+
+
 def flake8_format(data: list) -> None:
     for row in data:
         print(
