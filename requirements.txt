@@ -13,6 +13,7 @@ bandit
 dodgy
 
 pytest
+pytest-json
 
 requests
 wheel
