@@ -36,14 +36,14 @@ Implemented:
 - flake8-bandit (ext, bandit)
 - yapf
 - isort
-- bandit
+- bandit (flake8 plugin)
+- Safety
+- Dodgy
 - vulture
 - pylint
 - Upload to pypi
 
 Left to do:
-- Safety
-- Dodgy
 - Pytest
 """
 
