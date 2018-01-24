@@ -1,5 +1,5 @@
 # SnekCheck
-A generalized, highly customizable python linter
+A generalized, highly customizable python linter ![](https://travis-ci.org/IzunaDevs/SnekChek.svg?branch=master)
 
 All configuration (except for pylint) is done in one file: .snekrc
 
