@@ -1,10 +1,13 @@
 # Stdlib
 import contextlib
 import io
+import json
+import os
 import subprocess  # noqa: B404
 import sys
 
 # External Libraries
+import pytest
 import requests
 import twine.commands.upload
 
@@ -14,7 +17,25 @@ from snekchek.structure import Linter
 
 
 def get_tools():
-    return [Pypi]
+    return Pytest, Pypi
+
+
+class Pytest(Linter):
+    def run(self, _: list) -> None:
+        with contextlib.redirect_stdout(io.StringIO()), \
+             contextlib.redirect_stderr(io.StringIO()):
+            exitcode = pytest.main(["--json=.log.json", "-qqqq", "-c", ".snekrc"])
+        self.status_code = exitcode
+
+        with open(".log.json") as file:
+            data = json.load(file)
+
+        os.remove(".log.json")
+
+        self.hook([
+            test for test in data['report']['tests']
+            if test['outcome'] == 'failed'
+        ])
 
 
 class Pypi(Linter):

@@ -52,3 +52,9 @@ def safety_format(data: list) -> None:
 def dodgy_format(data: list) -> None:
     for row in data:
         print(f"{row[1]}:{row[0]}: {row[2]}")
+
+
+def pytest_format(data: list) -> None:
+    for test in data:
+        print(test['name'])
+        print(test['call']['longrepr'])

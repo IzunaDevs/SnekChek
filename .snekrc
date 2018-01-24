@@ -4,7 +4,7 @@ linters = flake8, pylint, yapf, isort, pyroma, safety, bandit, dodgy, pydocstyle
 [flake8]
 max-line-length=100
 exclude=build
-ignore=D100,D104,D103,D101,D107,D102,D210,D200,I100,I101,I201
+ignore=D100,D104,D103,D101,D107,D102,D210,D200,I100,I101,I201,B101
 
 [isort]
 line_length=100
@@ -24,3 +24,6 @@ min-confidence=0
 [pypi]  # needed for twine
 
 [style]  # needed for yapf, made an issue to their repo to allow [yapf] in non-`setup.cfg` files
+
+[pytest]
+testpaths=tests
