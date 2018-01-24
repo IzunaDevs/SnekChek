@@ -19,6 +19,7 @@ def get_tools():
 
 class Pypi(Linter):
     def run(self, _: list) -> None:
+        print("Running pypi")
         try:
             with contextlib.redirect_stdout(io.StringIO()), \
                     contextlib.redirect_stderr(io.StringIO()):
