@@ -61,5 +61,9 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
         "ignore": [],
         "pyup_key": '',
         "db_path": ''
+    },
+    "dodgy": {
+        "quiet": False,
+        "ignore_paths": []
     }
 })

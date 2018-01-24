@@ -47,3 +47,8 @@ def pypi_format(data: list) -> None:
 def safety_format(data: list) -> None:
     for row in data:
         print(f"[{row[4]}] ({row[0]+row[1]}) {row[3]}")
+
+
+def dodgy_format(data: list) -> None:
+    for row in data:
+        print(f"{row[1]}:{row[0]}: {row[2]}")

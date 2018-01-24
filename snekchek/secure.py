@@ -5,6 +5,7 @@ import json
 import os
 
 # External Libraries
+import dodgy.run
 import safety.cli
 
 # Snekchek
@@ -12,7 +13,7 @@ from snekchek.structure import Linter
 
 
 def get_security() -> list:
-    return [Safety]
+    return Safety, Dodgy
 
 
 class Safety(Linter):
@@ -40,3 +41,12 @@ class Safety(Linter):
         self.status_code = 1 if json_data else 0
 
         self.hook(json_data)
+
+
+class Dodgy(Linter):
+    def run(self, _: list) -> None:
+        data = dodgy.run.run_checks(".", self.conf.as_list("ignore_paths"))
+
+        self.status_code = 1 if data else 0
+
+        self.hook(data)
