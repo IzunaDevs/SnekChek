@@ -23,7 +23,7 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
     "flake8": {
         "max-line-length": 79,
         "exclude": ["build", "dist"],
-        "ignore": ["D100", "D101"],
+        "ignore": [],
         "quiet": False
     },
     "pylint": {
@@ -55,5 +55,11 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
         "exclude": [],
         "sort-by-size": False,
         "quiet": False
+    },
+    "safety": {
+        "quiet": False,
+        "ignore": [],
+        "pyup_key": '',
+        "db_path": ''
     }
 })

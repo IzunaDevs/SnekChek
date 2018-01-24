@@ -42,3 +42,8 @@ def yapf_format(data: list) -> None:
 def pypi_format(data: list) -> None:
     for row in data:
         print(row)
+
+
+def safety_format(data: list) -> None:
+    for row in data:
+        print(f"[{row[4]}] ({row[0]+row[1]}) {row[3]}")
