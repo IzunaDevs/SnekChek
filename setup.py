@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 # Snekchek
 from snekchek import misc
 
-with open("README.md") as file:
+with open("README.rst") as file:
     README = file.read()
 
 with open("requirements.txt") as file:
