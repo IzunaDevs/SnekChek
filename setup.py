@@ -21,7 +21,7 @@ if __name__ == '__main__':
         maintainer="martmists",
         maintainer_email="mail@martmists.com",
         license=LICENSE,
-        zip_safe=True,
+        zip_safe=False,
         version=misc.__version__,
         description=misc.description,
         long_description=README,
