@@ -10,9 +10,6 @@ with open("README.md") as file:
 with open("requirements.txt") as file:
     REQUIREMENTS = file.readlines()
 
-with open("LICENSE") as file:
-    LICENSE = file.read()
-
 if __name__ == '__main__':
     setup(
         name="snekchek",
@@ -20,7 +17,7 @@ if __name__ == '__main__':
         author_email="izunadevs@martmists.com",
         maintainer="martmists",
         maintainer_email="mail@martmists.com",
-        license=LICENSE,
+        license="MIT",
         zip_safe=False,
         version=misc.__version__,
         description=misc.description,
