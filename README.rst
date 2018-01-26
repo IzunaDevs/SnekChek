@@ -1,7 +1,8 @@
 SnekCheck
 =========
+|image0|
 
-A generalized, highly customizable python linter |image0|
+A generalized, highly customizable python linter 
 
 All configuration (except for pylint) is done in one file: .snekrc
 
