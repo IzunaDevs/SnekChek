@@ -8,8 +8,6 @@ import subprocess  # noqa: B404
 import sys
 
 # External Libraries
-import configobj
-from snekchek.baseconfig import config
 import snekchek.format
 
 
@@ -32,6 +30,10 @@ def get_py_files(dir_name: str) -> list:
 
 class CheckHandler:
     def __init__(self, file: str, out_json: bool, check_dir: str = "."):
+        # Do this here so setup.py doesn't error
+        from snekchek.baseconfig import config
+        import configobj
+
         self.parser = config
         self.parser.merge(configobj.ConfigObj(file))
 
