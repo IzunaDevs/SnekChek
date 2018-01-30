@@ -2,6 +2,7 @@ language: python
 
 python:
   - "3.6"
+  - "3.7-dev"
 
 install:
   - "pip install -r requirements-ci.txt"
@@ -10,7 +11,6 @@ script:
   # ignore output from install
   - python setup.py install >> /dev/null
   - snekchek
-  - snekchek --json
 
 cache: pip
 
