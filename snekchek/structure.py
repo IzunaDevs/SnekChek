@@ -29,6 +29,10 @@ def get_py_files(dir_name: str) -> list:
     ])
 
 
+class ModuleNotInstalled(Exception):
+    pass
+
+
 class CheckHandler:
     def __init__(self, file: str, out_json: bool, check_dir: str = "."):
         # Do this here so setup.py doesn't error
@@ -86,7 +90,7 @@ class CheckHandler:
         self.current = linter.name
 
         if any(x not in self.installed for x in linter.requires_install):
-            raise ModuleNotFoundError(linter.requires_install)
+            raise ModuleNotInstalled(linter.requires_install)
 
         if linter.name not in self.parser["all"].as_list("linters"):
             return
