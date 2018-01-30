@@ -44,8 +44,7 @@ if __name__ == '__main__':
         ],
         classifiers=[
             "Development Status :: 5 - Production/Stable",
-            "Environment :: Console",
-            "Intended Audience :: Developers",
+            "Environment :: Console", "Intended Audience :: Developers",
             "License :: OSI Approved :: MIT License",
             "Operating System :: OS Independent",
             "Programming Language :: Python :: 3",
