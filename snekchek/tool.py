@@ -7,7 +7,6 @@ Currently included:
 """
 
 # Stdlib
-import contextlib
 import io
 import json
 import os
@@ -17,6 +16,7 @@ import sys
 # External Libraries
 from snekchek.misc import __version__
 from snekchek.structure import Linter
+from snekchek.utils import redirect_stderr, redirect_stdout
 
 
 def get_tools():
@@ -52,8 +52,8 @@ class Pypi(Linter):
         import twine.commands.upload
 
         try:
-            with contextlib.redirect_stdout(io.StringIO()), \
-                    contextlib.redirect_stderr(io.StringIO()):
+            with redirect_stdout(io.StringIO()), \
+                    redirect_stderr(io.StringIO()):
                 proc = subprocess.Popen(  # noqa: B603
                     [sys.executable, "setup.py", "sdist", "bdist_wheel"],
                     stdout=subprocess.DEVNULL)

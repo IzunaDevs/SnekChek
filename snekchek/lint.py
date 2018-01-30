@@ -19,13 +19,13 @@ Linters included:
 """
 
 # Stdlib
-import contextlib
 import io
 import json
 import re
 
 # External Libraries
 from snekchek.structure import Linter
+from snekchek.utils import redirect_stderr, redirect_stdout
 
 
 def get_linters() -> list:
@@ -42,7 +42,7 @@ class Flake8(Linter):
         import flake8.main.cli
 
         file = io.StringIO()
-        with contextlib.redirect_stdout(file):
+        with redirect_stdout(file):
             try:
                 sett = ["--config=" + self.confpath]
                 sett.extend(files)
@@ -73,7 +73,7 @@ class Vulture(Linter):
         vult = vulture.core.Vulture(self.conf.as_bool('verbose'))
         vult.scavenge(files, [x.strip() for x in self.conf.as_list("exclude")])
         file = io.StringIO()
-        with contextlib.redirect_stdout(file):
+        with redirect_stdout(file):
             vult.report(
                 self.conf.as_int("min-confidence"),
                 self.conf.as_bool("sort-by-size"))
@@ -95,7 +95,7 @@ class Pylint(Linter):
 
         args = ["-f", "json"] + files
         file = io.StringIO()
-        with contextlib.redirect_stdout(file):
+        with redirect_stdout(file):
             pylint.lint.Run(args, exit=False)
         file.seek(0)
 
@@ -111,8 +111,7 @@ class Pyroma(Linter):
 
     def run(self, _: list) -> None:
         file = io.StringIO()
-        with contextlib.redirect_stdout(file), contextlib.redirect_stderr(
-                io.StringIO()):
+        with redirect_stdout(file), redirect_stderr(io.StringIO()):
             # Import pyroma here because it uses logging and sys.stdout
             import pyroma  # noqa pylint: disable=all
             pyroma.run('directory', '.')
