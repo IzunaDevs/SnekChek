@@ -60,10 +60,9 @@ class Pypi(Linter):
                 proc.wait()
                 twine.commands.upload.upload(
                     ["dist/*{}*".format(__version__)],
-                    self.conf["TWINE_REPOSITORY"],
-                    self.conf.as_bool("sign"), self.conf.get("identity"),
-                    self.conf["TWINE_USERNAME"], self.conf["TWINE_PASSWORD"],
-                    self.conf.get("comment"),
+                    self.conf["TWINE_REPOSITORY"], self.conf.as_bool("sign"),
+                    self.conf.get("identity"), self.conf["TWINE_USERNAME"],
+                    self.conf["TWINE_PASSWORD"], self.conf.get("comment"),
                     self.conf.get("sign-with"), self.confpath,
                     self.conf.get("skip-existing", True), None, None, None)
 

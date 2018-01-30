@@ -3,18 +3,14 @@
 
 def flake8_format(data: list) -> None:
     for row in data:
-        print(
-            ("{row['path']}:{row['line']}:{row['col']}: "
-             "{row['errcode']} {row['msg']}").format(row=row)
-        )
+        print(("{row['path']}:{row['line']}:{row['col']}: "
+               "{row['errcode']} {row['msg']}").format(row=row))
 
 
 def vulture_format(data: list) -> None:
     for row in data:
-        print(
-            ("{row['path']}:{row['line']}: "
-             "{row['err']} ({row['conf']}% confidence)").format(row=row)
-        )
+        print(("{row['path']}:{row['line']}: "
+               "{row['err']} ({row['conf']}% confidence)").format(row=row))
 
 
 def pylint_format(data: list) -> None:
@@ -51,7 +47,7 @@ def pypi_format(data: list) -> None:
 
 def safety_format(data: list) -> None:
     for row in data:
-        print("[{row[4]}] ({row[0]+row[1]}) {row[3]}".format(row=row))
+        print("[{row[4]}] ({row[0]}{row[1]}) {row[3]}".format(row=row))
 
 
 def dodgy_format(data: list) -> None:
