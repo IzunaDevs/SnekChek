@@ -23,7 +23,7 @@ class _RedirectStream:
         setattr(sys, self._stream, self._old_targets.pop())
 
 
-class redirect_stdout(_RedirectStream):
+class redirect_stdout(_RedirectStream):  # pylint: disable=invalid-name
     """Context manager for temporarily redirecting stdout to another file.
         # How to send help() to stderr
         with redirect_stdout(sys.stderr):
@@ -37,7 +37,7 @@ class redirect_stdout(_RedirectStream):
     _stream = "stdout"
 
 
-class redirect_stderr(_RedirectStream):
+class redirect_stderr(_RedirectStream):  # pylint: disable=invalid-name
     """Context manager for temporarily redirecting stderr to another file."""
 
     _stream = "stderr"
