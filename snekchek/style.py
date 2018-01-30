@@ -7,11 +7,11 @@ Stylers included:
 """
 
 # Stdlib
-import contextlib
 import io
 
 # External Libraries
 from snekchek.structure import Linter
+from snekchek.utils import redirect_stdout, redirect_stderr
 
 
 def get_stylers() -> list:
@@ -30,7 +30,7 @@ class ISort(Linter):
         res = []
 
         for filename in files:
-            with contextlib.redirect_stdout(io.StringIO()):  # mute stdout
+            with redirect_stdout(io.StringIO()):  # mute stdout
                 sort = isort.SortImports(filename, **self.conf)
 
             if sort.skipped:
@@ -47,7 +47,7 @@ class ISort(Linter):
             else:
                 with open(filename) as file:
                     out = io.StringIO()
-                    with contextlib.redirect_stdout(out):
+                    with redirect_stdout(out):
                         sort._show_diff(file.read())  # pylint: disable=protected-access
                     out.seek(0)
                     diff = out.read()
