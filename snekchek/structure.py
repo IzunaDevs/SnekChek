@@ -4,7 +4,7 @@
 import json
 import os
 import re
-import subprocess
+import subprocess  # noqa: B404
 import sys
 
 # External Libraries
@@ -47,7 +47,7 @@ class CheckHandler:
 
         patt = re.compile(r"(?P<package>\S+) \((?P<version>\S+)\)", re.M)
 
-        proc = subprocess.Popen(
+        proc = subprocess.Popen(  # noqa: B603
             [sys.executable, "-m", "pip", "list", "--format=legacy"],
             stdout=subprocess.PIPE)
 
