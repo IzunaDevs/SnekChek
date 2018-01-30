@@ -89,11 +89,11 @@ class CheckHandler:
         """Run a checker class"""
         self.current = linter.name
 
-        if any(x not in self.installed for x in linter.requires_install):
-            raise ModuleNotInstalled(linter.requires_install)
-
         if linter.name not in self.parser["all"].as_list("linters"):
             return
+
+        if any(x not in self.installed for x in linter.requires_install):
+            raise ModuleNotInstalled(linter.requires_install)
 
         linter.add_output_hook(self.out_func)
         linter.set_config(self.fn, self.parser[linter.name])
