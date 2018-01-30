@@ -23,7 +23,7 @@ def get_py_files(dir_name: str) -> list:
     """Get all .py files."""
     return flatten([
         x for x in
-        [["{}/{}".format(path, f) for f in files if f.endswith(".py")]
+        [["{0}/{1}".format(path, f) for f in files if f.endswith(".py")]
          for path, _, files in os.walk(dir_name)
          if not path.startswith("./build")] if x
     ])
@@ -72,7 +72,7 @@ class CheckHandler:
                 if not log or self.parser[name].as_bool("quiet"):
                     continue
 
-                print("[[{}]]".format(name))
+                print("[[{0}]]".format(name))
                 getattr(snekchek.format, name + "_format")(log)
                 print("\n")
 

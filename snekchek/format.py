@@ -3,26 +3,23 @@
 
 def flake8_format(data: list) -> None:
     for row in data:
-        print(("{row['path']}:{row['line']}:{row['col']}: "
-               "{row['errcode']} {row['msg']}").format(row=row))
+        print("{path}:{line}:{col}: {errcode} {msg}".format(**row))
 
 
 def vulture_format(data: list) -> None:
     for row in data:
-        print(("{row['path']}:{row['line']}: "
-               "{row['err']} ({row['conf']}% confidence)").format(row=row))
+        print("{path}:{line}: {err} ({conf}% confidence)".format(**row))
 
 
 def pylint_format(data: list) -> None:
     last_path = ""
     for row in data:
         if row['path'] != last_path:
-            print("File: {row['path']}".format(row=row))
+            print("File: {0}".format(row['path']))
             last_path = row['path']
 
-        print(
-            ("{row['type'][0].upper()}:{row['line']:>3}, {row['column']:>2}: "
-             "{row['message']} ({row['symbol']})").format(row=row))
+        print("{type_}:{line:>3}, {column:>2}: {message} ({symbol})".format(
+            type_=row['type'][0].upper(), **row))
 
 
 def pyroma_format(data: dict) -> None:
