@@ -9,6 +9,7 @@ pyroma
 pylint
 vulture
 isort
+yapf
 safety
 dodgy
 pytest

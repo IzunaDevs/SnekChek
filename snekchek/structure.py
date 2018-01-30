@@ -89,7 +89,8 @@ class CheckHandler:
         """Run a checker class"""
         self.current = linter.name
 
-        if linter.name not in self.parser["all"].as_list("linters"):
+        if (linter.name not in self.parser["all"].as_list("linters") or
+                linter.base_pyversion > sys.version_info):
             return
 
         if any(x not in self.installed for x in linter.requires_install):
@@ -106,6 +107,9 @@ class CheckHandler:
 
 class Linter:
     """Common shared class for all linters/stylers/tools"""
+
+    requires_install = []
+    base_pyversion = (3, 0, 0)
 
     def __init__(self):
         self.status_code = 0

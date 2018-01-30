@@ -60,6 +60,7 @@ class ISort(Linter):
 
 class Yapf(Linter):
     requires_install = ["yapf"]
+    base_pyversion = (3, 4, 0)
 
     def run(self, files: list) -> None:
         import yapf.yapflib.yapf_api
