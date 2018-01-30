@@ -7,13 +7,13 @@ Checkers included:
 """
 
 # Stdlib
-import contextlib
 import io
 import json
 import os
 
 # External Libraries
 from snekchek.structure import Linter
+from snekchek.utils import redirect_stdout
 
 
 def get_security() -> list:
@@ -33,7 +33,7 @@ class Safety(Linter):
         outfile = io.StringIO()
 
         try:
-            with contextlib.redirect_stdout(outfile):
+            with redirect_stdout(outfile):
                 safety.cli.check.callback(
                     self.conf.get("pyup_key", ""), self.conf.get(
                         "db_path", ""), True, False, False, False, False,

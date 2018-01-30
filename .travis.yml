@@ -3,7 +3,7 @@ language: python
 python:
 #  - "3.0"
 #  - "3.1"  # both of these error on travis
-  - "3.2"
+#  - "3.2"  # this one too...?
   - "3.3"
   - "3.4"
   - "3.5"
