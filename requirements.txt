@@ -1,14 +1,1 @@
-flake8
-pyroma
-pylint
-vulture
-yapf
-isort
-safety
-dodgy
-pytest
-pytest-json
-requests
-wheel
-twine
 configobj

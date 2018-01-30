@@ -11,10 +11,6 @@ import contextlib
 import io
 
 # External Libraries
-import isort
-import yapf.yapflib.yapf_api
-
-# Snekchek
 from snekchek.structure import Linter
 
 
@@ -23,7 +19,11 @@ def get_stylers() -> list:
 
 
 class ISort(Linter):
+    requires_install = ["isort"]
+
     def run(self, files: list) -> None:
+        import isort
+
         self.conf['line_length'] = self.conf.as_int('line_length')
         self.conf['sections'] = self.conf.as_list('sections')
 
@@ -59,7 +59,11 @@ class ISort(Linter):
 
 
 class Yapf(Linter):
+    requires_install = ["yapf"]
+
     def run(self, files: list) -> None:
+        import yapf.yapflib.yapf_api
+
         res = []
 
         for file in files:

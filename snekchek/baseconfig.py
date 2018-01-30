@@ -11,8 +11,8 @@ __all__ = ("config", )
 config = configobj.ConfigObj({  # pylint: disable=invalid-name
     "all": {
         "linters": [
-            "flake8", "pylint", "yapf", "isort", "pyroma", "safety", "bandit",
-            "dodgy", "pydocstyle", "vulture", "pytest", "pypi"
+            "flake8", "pylint", "yapf", "isort", "pyroma", "safety", "dodgy",
+            "vulture", "pytest", "pypi"
         ]
     },
     "pypi": {

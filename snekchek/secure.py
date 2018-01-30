@@ -13,10 +13,6 @@ import json
 import os
 
 # External Libraries
-import dodgy.run
-import safety.cli
-
-# Snekchek
 from snekchek.structure import Linter
 
 
@@ -25,7 +21,11 @@ def get_security() -> list:
 
 
 class Safety(Linter):
+    requires_install = ["safety"]
+
     def run(self, _: list) -> None:
+        import safety.cli
+
         if "requirements.txt" not in os.listdir():
             self.hook([])
             return
@@ -52,7 +52,11 @@ class Safety(Linter):
 
 
 class Dodgy(Linter):
+    requires_install = ["dodgy"]
+
     def run(self, _: list) -> None:
+        import dodgy.run
+
         data = dodgy.run.run_checks(".", self.conf.as_list("ignore_paths"))
 
         self.status_code = 1 if data else 0

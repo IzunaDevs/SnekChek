@@ -27,7 +27,7 @@ Linters supported:
 # Stdlib
 import argparse
 
-# Snekchek
+# External Libraries
 from snekchek.lint import get_linters
 from snekchek.secure import get_security
 from snekchek.structure import CheckHandler
@@ -43,17 +43,19 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
     """
     handler = CheckHandler(file=args.config_file, out_json=args.json)
 
-    for linter in get_linters():
-        handler.run_linter(linter())
-
     for style in get_stylers():
         handler.run_linter(style())
+
+    for linter in get_linters():
+        handler.run_linter(linter())
 
     for security in get_security():
         handler.run_linter(security())
 
     for tool in get_tools():
         tool = tool()
+
+        # Only run pypi if everything else passed
         if tool.name == "pypi" and handler.status_code != 0:
             continue
 

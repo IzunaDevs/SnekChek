@@ -25,11 +25,6 @@ import json
 import re
 
 # External Libraries
-import flake8.main.cli
-import pylint.lint
-import vulture.core
-
-# Snekchek
 from snekchek.structure import Linter
 
 
@@ -38,10 +33,14 @@ def get_linters() -> list:
 
 
 class Flake8(Linter):
+    requires_install = ["flake8"]
+
     patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
                       r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
 
     def run(self, files: list) -> None:
+        import flake8.main.cli
+
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
             try:
@@ -61,12 +60,16 @@ class Flake8(Linter):
 
 
 class Vulture(Linter):
+    requires_install = ["vulture"]
+
     patt = re.compile(
         r"(?P<path>[^:]+):(?P<line>[0-9]+): "
         r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
         r"\((?P<conf>[0-9]+)% confidence")
 
     def run(self, files: list) -> None:
+        import vulture.core
+
         vult = vulture.core.Vulture(self.conf.as_bool('verbose'))
         vult.scavenge(files, [x.strip() for x in self.conf.as_list("exclude")])
         file = io.StringIO()
@@ -85,7 +88,11 @@ class Vulture(Linter):
 
 
 class Pylint(Linter):
+    requires_install = ["pylint"]
+
     def run(self, files: list) -> None:
+        import pylint.lint
+
         args = ["-f", "json"] + files
         file = io.StringIO()
         with contextlib.redirect_stdout(file):
@@ -100,6 +107,8 @@ class Pylint(Linter):
 
 
 class Pyroma(Linter):
+    requires_install = ["pyroma"]
+
     def run(self, _: list) -> None:
         file = io.StringIO()
         with contextlib.redirect_stdout(file), contextlib.redirect_stderr(

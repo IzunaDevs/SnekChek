@@ -3,12 +3,12 @@
 # Stdlib
 import json
 import os
+import re
+import subprocess
 import sys
 
 # External Libraries
 import configobj
-
-# Snekchek
 from snekchek.baseconfig import config
 import snekchek.format
 
@@ -45,6 +45,18 @@ class CheckHandler:
 
         self.files = get_py_files(check_dir)
 
+        patt = re.compile(r"(?P<package>\S+) \((?P<version>\S+)\)", re.M)
+
+        proc = subprocess.Popen(
+            [sys.executable, "-m", "pip", "list", "--format=legacy"],
+            stdout=subprocess.PIPE)
+
+        proc.wait()
+
+        matches = list(patt.finditer(proc.stdout.read().decode()))
+
+        self.installed = [p.group("package") for p in matches]
+
     def exit(self) -> None:
         """Raise SystemExit with correct status code and output logs."""
         total = sum(len(logs) for logs in self.logs.values())
@@ -69,6 +81,9 @@ class CheckHandler:
     def run_linter(self, linter) -> None:
         """Run a checker class"""
         self.current = linter.name
+
+        if any(x not in self.installed for x in linter.requires_install):
+            raise ModuleNotFoundError(linter.requires_install)
 
         if linter.name not in self.parser["all"].as_list("linters"):
             return

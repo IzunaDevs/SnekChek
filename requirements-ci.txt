@@ -1,3 +1,4 @@
+flake8
 flake8-bugbear
 flake8-import-order
 flake8-tidy-imports
@@ -5,3 +6,15 @@ flake8-todo
 flake8-requirements
 flake8-string-format
 flake8-bandit
+pyroma
+pylint
+vulture
+yapf
+isort
+safety
+dodgy
+pytest
+pytest-json
+requests
+wheel
+twine

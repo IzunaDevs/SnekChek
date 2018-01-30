@@ -15,11 +15,6 @@ import subprocess  # noqa: B404
 import sys
 
 # External Libraries
-import pytest
-import requests
-import twine.commands.upload
-
-# Snekchek
 from snekchek.misc import __version__
 from snekchek.structure import Linter
 
@@ -29,9 +24,11 @@ def get_tools():
 
 
 class Pytest(Linter):
+    requires_install = ["pytest", "pytest-json"]
+
     def run(self, _: list) -> None:
-        # with contextlib.redirect_stdout(io.StringIO()), \
-        #         contextlib.redirect_stderr(io.StringIO()):
+        import pytest
+
         exitcode = pytest.main(
             ["--json=.log.json", "-qqqq", "-c", self.confpath])
         self.status_code = exitcode
@@ -48,7 +45,12 @@ class Pytest(Linter):
 
 
 class Pypi(Linter):
+    requires_install = ["twine", "wheel", "requests"]
+
     def run(self, _: list) -> None:
+        import requests
+        import twine.commands.upload
+
         try:
             with contextlib.redirect_stdout(io.StringIO()), \
                     contextlib.redirect_stderr(io.StringIO()):
