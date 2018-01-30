@@ -1,3 +1,7 @@
+"""
+This module provides redirect_* functions for Python <3.5
+"""
+
 # Stdlib
 from contextlib import contextmanager
 import sys

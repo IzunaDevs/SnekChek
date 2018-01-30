@@ -8,7 +8,6 @@ flake8-bandit
 pyroma
 pylint
 vulture
-yapf
 isort
 safety
 dodgy

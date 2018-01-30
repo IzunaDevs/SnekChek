@@ -11,7 +11,7 @@ import io
 
 # External Libraries
 from snekchek.structure import Linter
-from snekchek.utils import redirect_stdout, redirect_stderr
+from snekchek.utils import redirect_stdout
 
 
 def get_stylers() -> list:
