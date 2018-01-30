@@ -22,7 +22,8 @@ def flatten(nested_list: list) -> list:
 def get_py_files(dir_name: str) -> list:
     """Get all .py files."""
     return flatten([
-        x for x in [[f"{path}/{f}" for f in files if f.endswith(".py")]
+        x for x in [["{}/{}".format(path, f) for f in files
+                     if f.endswith(".py")]
                     for path, _, files in os.walk(dir_name)
                     if not path.startswith("./build")] if x
     ])
@@ -71,7 +72,7 @@ class CheckHandler:
                 if not log or self.parser[name].as_bool("quiet"):
                     continue
 
-                print(f"[[{name}]]")
+                print("[[{}]]".format(name))
                 getattr(snekchek.format, name + "_format")(log)
                 print("\n")
 
