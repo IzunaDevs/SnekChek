@@ -39,7 +39,8 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
         "line_length": 79,
         "inplace": True,
         "indent": '    ',
-        "sections": "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER".split(","),
+        "sections":
+        "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER".split(","),
         "quiet": False
     },
     "bandit": {
