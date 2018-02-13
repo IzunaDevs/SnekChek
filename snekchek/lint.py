@@ -63,9 +63,9 @@ class Vulture(Linter):
     requires_install = ["vulture"]
 
     patt = re.compile(
-        r"(?P<path>[^:]+):(?P<line>[0-9]+): "
+        r"^(?P<path>[^:]+):(?P<line>[0-9]+): "
         r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
-        r"\((?P<conf>[0-9]+)% confidence")
+        r"\((?P<conf>[0-9]+)% confidence\)$")
 
     def run(self, files: list) -> None:
         import vulture.core
