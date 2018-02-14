@@ -8,7 +8,7 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-  - "3.7-dev"  # Enabled again because libyaml isn't required anymore
+#  - "3.7-dev"  # Forgot we need libyaml to test ourselves
 
 install:
   - "pip install -r requirements-ci.txt"
