@@ -15,7 +15,7 @@ install:
 
 script:
   # ignore output from install
-  - python setup.py install >> /dev/null
+  - python setup.py install > /dev/null
   - snekchek
 
 cache: pip
