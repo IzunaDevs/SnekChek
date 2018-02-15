@@ -52,7 +52,7 @@ class CheckHandler:
 
         self.files = get_py_files(check_dir)
 
-        patt = re.compile(r"^(?P<package>\S+?)==(?P<version>\S+)", re.M)
+        patt = re.compile(r"^(?P<package>\S+?) \((?P<version>\S+)\)$", re.M)
 
         args = [sys.executable, '-m', 'pip', 'list']
 
