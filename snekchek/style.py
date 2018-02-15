@@ -26,6 +26,7 @@ class ISort(Linter):
 
         self.conf['line_length'] = self.conf.as_int('line_length')
         self.conf['sections'] = self.conf.as_list('sections')
+        self.conf['multi_line_output'] = self.conf.as_int('multi_line_output')
 
         res = []
 
