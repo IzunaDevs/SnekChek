@@ -56,7 +56,7 @@ class CheckHandler:
 
         args = [sys.executable, '-m', 'pip', 'list']
 
-        if sys.version_info >= (3, 6, 0):
+        if sys.version_info >= (3, 4, 0):
             args.extend(['--format=legacy'])
 
         proc = subprocess.Popen(  # noqa: B603
