@@ -52,10 +52,10 @@ class CheckHandler:
 
         self.files = get_py_files(check_dir)
 
-        patt = re.compile(r"(?P<package>\S+) \((?P<version>\S+)\)", re.M)
+        patt = re.compile(r"(?P<package>\S+?)==\((?P<version>\S+)\)", re.M)
 
         proc = subprocess.Popen(  # noqa: B603
-            [sys.executable, "-m", "pip", "list"],
+            [sys.executable, "-m", "pip", "freeze"],
             stdout=subprocess.PIPE)
 
         proc.wait()
