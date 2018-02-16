@@ -29,8 +29,9 @@ class Pytest(Linter):
     def run(self, _: list) -> None:
         import pytest
 
-        exitcode = pytest.main(
-            ["--json=.log.json", "-qqqq", "-c", self.confpath])
+        with redirect_stdout(sys.stderr):
+            exitcode = pytest.main(
+                ["--json=.log.json", "-qqqq", "-c", self.confpath])
         self.status_code = exitcode
 
         with open(".log.json") as file:
