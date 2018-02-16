@@ -34,7 +34,7 @@ class ModuleNotInstalled(Exception):
 
 
 class CheckHandler:
-    def __init__(self, file: str, out_json: bool, check_dir: str = "."):
+    def __init__(self, file: str, out_json: bool, check_dir: str = ".", files=None):
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
@@ -50,7 +50,7 @@ class CheckHandler:
 
         self.indent = 4 if "--debug" in sys.argv else None
 
-        self.files = get_py_files(check_dir)
+        self.files = files or get_py_files(check_dir)
 
         patt = re.compile(r"^(?P<package>\S+?) \((?P<version>\S+)\)$", re.M)
 
