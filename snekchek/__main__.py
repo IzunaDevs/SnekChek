@@ -41,7 +41,8 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
     To extend this tool, use this function and set do_exit to False
     to get returned the status code.
     """
-    handler = CheckHandler(file=args.config_file, out_json=args.json, files=args.files)
+    handler = CheckHandler(
+        file=args.config_file, out_json=args.json, files=args.files)
 
     for style in get_stylers():
         handler.run_linter(style())
@@ -76,8 +77,12 @@ def main() -> None:
         default=False)
     parser.add_argument(
         "--config-file", help="Select config file to use", default=".snekrc")
-    parser.add_argument('files', metavar='file', nargs='*', default=[],
-                        help='Files to run checks against')
+    parser.add_argument(
+        'files',
+        metavar='file',
+        nargs='*',
+        default=[],
+        help='Files to run checks against')
 
     args = parser.parse_args()
 
