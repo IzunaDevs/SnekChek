@@ -76,9 +76,10 @@ def main() -> None:
         default=False)
     parser.add_argument(
         "--config-file", help="Select config file to use", default=".snekrc")
-    args = parser.parse_args()
     parser.add_argument('files', metavar='file', nargs='*', default=[],
                         help='Files to run checks against')
+
+    args = parser.parse_args()
 
     run_main(args)
 
