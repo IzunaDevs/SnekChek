@@ -28,6 +28,7 @@ Linters supported:
 import argparse
 
 # External Libraries
+from snekchek.config_gen import generate
 from snekchek.lint import get_linters
 from snekchek.secure import get_security
 from snekchek.structure import CheckHandler
@@ -41,6 +42,10 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
     To extend this tool, use this function and set do_exit to False
     to get returned the status code.
     """
+    if args.init:
+        generate()
+        return None  # exit after generate instead of starting to lint
+
     handler = CheckHandler(
         file=args.config_file, out_json=args.json, files=args.files)
 
@@ -83,6 +88,8 @@ def main() -> None:
         nargs='*',
         default=[],
         help='Files to run checks against')
+    parser.add_argument(
+        "--init", help="generate snekrc", action="store_true", default=False)
 
     args = parser.parse_args()
 
