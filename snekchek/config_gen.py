@@ -12,7 +12,7 @@ class ConfigGenerator:
         """Lets the user enter the tools he want to use"""
         tools = "flake8,pylint,vulture,pyroma,isort,yapf,safety,dodgy,pytest,pypi".split(
             ",")
-        print("Available tools: {tools}".format(tools=",".join(tools)))
+        print("Available tools: {0}".format(",".join(tools)))
         answer = ask_list("What tools would you like to use?",
                           ["flake8", "pytest"])
 
@@ -83,8 +83,7 @@ class ConfigGenerator:
 def ask_bool(question: str, default: bool = True) -> bool:
     """Asks a question yes no style"""
     default_q = "Y/n" if default else "y/N"
-    answer = input("{question} [{default_q}]: ".format(
-        question=question, default_q=default_q))
+    answer = input("{0} [{1}]: ".format(question, default_q))
     lower = answer.lower()
     if not lower:
         return default
@@ -93,10 +92,10 @@ def ask_bool(question: str, default: bool = True) -> bool:
 
 def ask_int(question: str, default: int = None) -> int:
     """Asks for a number in a question"""
-    default_q = " [default: {default}]: ".format(
-        default=default) if default is not None else ""
-    answer = input("{question}{default_q}".format(
-        question=question, default_q=default_q))
+    default_q = " [default: {0}]: ".format(
+        default) if default is not None else ""
+    answer = input("{0} [{1}]: ".format(question, default_q))
+
     if not answer:
         if default is None:
             print("No default set, try again.")
@@ -105,17 +104,16 @@ def ask_int(question: str, default: int = None) -> int:
 
     if any(x not in "1234567890" for x in answer):
         print("Please enter only numbers (0-9).")
-        return ask_int_question(question, default)
+        return ask_int(question, default)
 
     return int(answer)
 
 
 def ask_path(question: str, default: str = None) -> str:
     """Asks for a path"""
-    default_q = " [default: {default}]: ".format(
-        default=default) if default is not None else ""
-    answer = input("{question}{default_q}".format(
-        question=question, default_q=default_q))
+    default_q = " [default: {0}]: ".format(
+        default) if default is not None else ""
+    answer = input("{0} [{1}]: ".format(question, default_q))
 
     if answer == "":
         return default
@@ -129,26 +127,24 @@ def ask_path(question: str, default: str = None) -> str:
 
 def ask_list(question: str, default: list = None) -> list:
     """Asks for a comma seperated list of strings"""
-    default_q = " [default: {default}]: ".format(
-        default=",".join(default)) if default is not None else ""
-    answer = input("{question}{default_q}".format(
-        question=question, default_q=default_q))
+    default_q = " [default: {0}]: ".format(
+        ",".join(default)) if default is not None else ""
+    answer = input("{0} [{1}]: ".format(question, default_q))
+
     if answer == "":
         return default
-    else:
-        return [ans.strip() for ans in answer.split(",")]
+    return [ans.strip() for ans in answer.split(",")]
 
 
 def ask_str(question: str, default: str = None):
     """Asks for a simple string"""
-    default_q = " [default: {default}]: ".format(
-        default=default) if default is not None else ""
-    answer = input("{question}{default_q}".format(
-        question=question, default_q=default_q))
+    default_q = " [default: {0}]: ".format(
+        default) if default is not None else ""
+    answer = input("{0} [{1}]: ".format(question, default_q))
+
     if answer == "":
         return default
-    else:
-        return answer
+    return answer
 
 
 def generate() -> None:
