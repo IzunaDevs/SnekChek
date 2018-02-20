@@ -83,7 +83,8 @@ class ConfigGenerator:
 def ask_bool(question: str, default: bool = True) -> bool:
     """Asks a question yes no style"""
     default_q = "Y/n" if default else "y/N"
-    answer = input(f"{question} [{default_q}]: ")
+    answer = input("{question} [{default_q}]: ".format(
+        question=question, default_q=default_q))
     lower = answer.lower()
     if not lower:
         return default
@@ -92,8 +93,10 @@ def ask_bool(question: str, default: bool = True) -> bool:
 
 def ask_int(question: str, default: int = None) -> int:
     """Asks for a number in a question"""
-    default_q = f" [default: {default}]: " if default is not None else ""
-    answer = input(f"{question}{default_q}")
+    default_q = " [default: {default}]: ".format(
+        default=default) if default is not None else ""
+    answer = input("{question}{default_q}".format(
+        question=question, default_q=default_q))
     if not answer:
         if default is None:
             print("No default set, try again.")
@@ -109,22 +112,27 @@ def ask_int(question: str, default: int = None) -> int:
 
 def ask_path(question: str, default: str = None) -> str:
     """Asks for a path"""
-    default_q = f" [default: {default}]: " if default is not None else ""
-    answer = input(f"{question}{default_q}")
+    default_q = " [default: {default}]: ".format(
+        default=default) if default is not None else ""
+    answer = input("{question}{default_q}".format(
+        question=question, default_q=default_q))
 
     if answer == "":
         return default
     elif os.path.isdir(answer):
         return answer
     else:
-        print(f"No such directory: {answer}, please try again")
+        print("No such directory: {answer}, please try again".format(
+            answer=answer))
         ask_path(question, default)
 
 
 def ask_list(question: str, default: list = None) -> list:
     """Asks for a comma seperated list of strings"""
-    default_q = f" [default: {','.join(default)}]: " if default is not None else ""
-    answer = input(f"{question}{default_q}")
+    default_q = " [default: {','.join(default)}]: ".format(
+        default=default) if default is not None else ""
+    answer = input(f"{question}{default_q}".format(
+        question=question, default_q=default_q))
     if answer == "":
         return default
     else:
@@ -133,8 +141,10 @@ def ask_list(question: str, default: list = None) -> list:
 
 def ask_str(question: str, default: str = None):
     """Asks for a simple string"""
-    default_q = f" [default: {default}]: " if default is not None else ""
-    answer = input(f"{question}{default_q}")
+    default_q = " [default: {default}]: ".format(
+        default=default) if default is not None else ""
+    answer = input(f"{question}{default_q}".format(
+        question=question, default_q=default_q))
     if answer == "":
         return default
     else:
