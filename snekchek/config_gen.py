@@ -12,7 +12,7 @@ class ConfigGenerator:
         """Lets the user enter the tools he want to use"""
         tools = "flake8,pylint,vulture,pyroma,isort,yapf,safety,dodgy,pytest,pypi".split(
             ",")
-        print(f"Available tools: {', '.join(tools)}")
+        print("Available tools: {tools}".format(tools=",".join(tools)))
         answer = ask_list("What tools would you like to use?",
                           ["flake8", "pytest"])
 
@@ -129,9 +129,9 @@ def ask_path(question: str, default: str = None) -> str:
 
 def ask_list(question: str, default: list = None) -> list:
     """Asks for a comma seperated list of strings"""
-    default_q = " [default: {','.join(default)}]: ".format(
-        default=default) if default is not None else ""
-    answer = input(f"{question}{default_q}".format(
+    default_q = " [default: {default}]: ".format(
+        default=",".join(default)) if default is not None else ""
+    answer = input("{question}{default_q}".format(
         question=question, default_q=default_q))
     if answer == "":
         return default
@@ -143,7 +143,7 @@ def ask_str(question: str, default: str = None):
     """Asks for a simple string"""
     default_q = " [default: {default}]: ".format(
         default=default) if default is not None else ""
-    answer = input(f"{question}{default_q}".format(
+    answer = input("{question}{default_q}".format(
         question=question, default_q=default_q))
     if answer == "":
         return default
