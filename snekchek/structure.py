@@ -50,6 +50,8 @@ class CheckHandler:
                     print("no config found falling back to default")
                 else:
                     file = ".snekrc"
+            else:
+                print("no config found falling back to default")
         self.parser = config
         self.parser.merge(configobj.ConfigObj(file))
 
