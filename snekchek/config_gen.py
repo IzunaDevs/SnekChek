@@ -122,7 +122,7 @@ def ask_path(question: str, default: str = None) -> str:
     else:
         print("No such directory: {answer}, please try again".format(
             answer=answer))
-        ask_path(question, default)
+        return ask_path(question, default)
 
 
 def ask_list(question: str, default: list = None) -> list:
