@@ -120,6 +120,10 @@ def ask_path(question: str, default: str = None) -> str:
     elif os.path.isdir(answer):
         return answer
 
+    print("No such directory: {answer}, please try again".format(
+        answer=answer))
+    return ask_path(question, default)
+
 
 def ask_list(question: str, default: list = None) -> list:
     """Asks for a comma seperated list of strings"""
