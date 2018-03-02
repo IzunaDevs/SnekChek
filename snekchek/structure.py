@@ -42,7 +42,9 @@ class CheckHandler:
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
-
+        if not os.path.isfile(file):
+            raise FileNotFoundError("config file not found: {0}".format(file))
+            
         self.parser = config
         self.parser.merge(configobj.ConfigObj(file))
 
