@@ -37,6 +37,7 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
     },
     "isort": {
         "line_length": 79,
+        "multi_line_output": True,
         "inplace": True,
         "indent": '    ',
         "sections":
