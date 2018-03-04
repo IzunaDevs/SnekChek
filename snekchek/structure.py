@@ -42,7 +42,16 @@ class CheckHandler:
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
-
+        if not os.path.isfile(file):
+            print("config file not found: {0}".format(file))
+            if file != ".snekrc":
+                print("trying snekrc...")
+                if not os.path.isfile(".snekrc"):
+                    print("no config found falling back to default")
+                else:
+                    file = ".snekrc"
+            else:
+                print("no config found falling back to default")
         self.parser = config
         self.parser.merge(configobj.ConfigObj(file))
 
