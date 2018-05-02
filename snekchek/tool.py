@@ -60,7 +60,7 @@ class Pypi(Linter):
                     stdout=subprocess.DEVNULL)
                 proc.wait()
                 twine.commands.upload.upload(
-                    ["dist/*{0}*".format(__version__)],
+                    ["dist/*{0}*".format(__version__)],  # TODO: Fix this to use generic version from any project
                     self.conf["TWINE_REPOSITORY"], self.conf.as_bool("sign"),
                     self.conf.get("identity"), self.conf["TWINE_USERNAME"],
                     self.conf["TWINE_PASSWORD"], self.conf.get("comment"),
