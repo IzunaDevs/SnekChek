@@ -65,12 +65,9 @@ class CheckHandler:
 
         self.files = files or get_py_files(check_dir)
 
-        patt = re.compile(r"^(?P<package>\S+?) \((?P<version>\S+)\)$", re.M)
+        patt = re.compile(r"^(?P<package>\S+?)\s*(?P<version>\S+)$", re.M)
 
         args = [sys.executable, '-m', 'pip', 'list']
-
-        if sys.version_info >= (3, 4, 0):
-            args.extend(['--format=legacy'])
 
         proc = subprocess.Popen(  # noqa: B603
             args, stdout=subprocess.PIPE)
