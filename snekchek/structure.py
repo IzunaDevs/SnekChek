@@ -65,7 +65,7 @@ class CheckHandler:
 
         self.files = files or get_py_files(check_dir)
 
-        patt = re.compile(r"^(?P<package>\S+?)\s*(?P<version>\S+)$", re.M)
+        patt = re.compile(r"^(?P<package>\S+?)\s*(?P<version>\S+)\s*$", re.M)
 
         args = [sys.executable, '-m', 'pip', 'list']
 
@@ -74,7 +74,7 @@ class CheckHandler:
 
         proc.wait()
 
-        matches = list(patt.finditer(proc.stdout.read().decode()))
+        matches = list(patt.finditer(proc.stdout.read().decode()))[2:]  # [2:] to remove title and the dashes
 
         self.installed = [p.group("package") for p in matches]
 
