@@ -42,7 +42,16 @@ class CheckHandler:
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
-
+        if not os.path.isfile(file):
+            print("config file not found: {0}".format(file))
+            if file != ".snekrc":
+                print("trying snekrc...")
+                if not os.path.isfile(".snekrc"):
+                    print("no config found falling back to default")
+                else:
+                    file = ".snekrc"
+            else:
+                print("no config found falling back to default")
         self.parser = config
         self.parser.merge(configobj.ConfigObj(file))
 
@@ -56,19 +65,16 @@ class CheckHandler:
 
         self.files = files or get_py_files(check_dir)
 
-        patt = re.compile(r"^(?P<package>\S+?) \((?P<version>\S+)\)$", re.M)
+        patt = re.compile(r"^(?P<package>\S+?)\s*(?P<version>\S+)\s*$", re.M)
 
         args = [sys.executable, '-m', 'pip', 'list']
-
-        if sys.version_info >= (3, 4, 0):
-            args.extend(['--format=legacy'])
 
         proc = subprocess.Popen(  # noqa: B603
             args, stdout=subprocess.PIPE)
 
         proc.wait()
 
-        matches = list(patt.finditer(proc.stdout.read().decode()))
+        matches = list(patt.finditer(proc.stdout.read().decode()))[2:]  # [2:] to remove title and the dashes
 
         self.installed = [p.group("package") for p in matches]
 

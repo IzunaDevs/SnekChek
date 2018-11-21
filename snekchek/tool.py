@@ -71,7 +71,7 @@ class Pypi(Linter):
                         config_file=self.confpath,
                         skip_existing= self.conf.get("skip-existing", True)
                     )
-                    ["dist/*{0}*".format(__version__)]
+                    ["dist/*{0}*".format(__version__)]  # TODO: Fix this to use generic version from any project
                 )
 
         except requests.exceptions.HTTPError as err:

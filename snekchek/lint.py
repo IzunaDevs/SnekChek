@@ -96,7 +96,7 @@ class Pylint(Linter):
         args = ["-f", "json"] + files
         file = io.StringIO()
         with redirect_stdout(file):
-            pylint.lint.Run(args, exit=False)
+            pylint.lint.Run(args, do_exit=False)
         file.seek(0)
 
         text = file.read()
