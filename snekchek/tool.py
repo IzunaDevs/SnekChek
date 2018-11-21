@@ -69,9 +69,9 @@ class Pypi(Linter):
                         comment=self.conf.get("comment"),
                         sign_with=self.conf.get("sign-with"),
                         config_file=self.confpath,
-                        skip_existing= self.conf.get("skip-existing", True)
+                        skip_existing=self.conf.get("skip-existing", True)
                     )
-                    ["dist/*{0}*".format(__version__)]  # TODO: Fix this to use generic version from any project
+                    ["dist/*{0}*".format(self.conf.get("version", __version__))]
                 )
 
         except requests.exceptions.HTTPError as err:
