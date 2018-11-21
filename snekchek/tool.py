@@ -60,12 +60,19 @@ class Pypi(Linter):
                     stdout=subprocess.DEVNULL)
                 proc.wait()
                 twine.commands.upload.upload(
-                    ["dist/*{0}*".format(__version__)],
-                    self.conf["TWINE_REPOSITORY"], self.conf.as_bool("sign"),
-                    self.conf.get("identity"), self.conf["TWINE_USERNAME"],
-                    self.conf["TWINE_PASSWORD"], self.conf.get("comment"),
-                    self.conf.get("sign-with"), self.confpath,
-                    self.conf.get("skip-existing", True), None, None, None)
+                    twine.Settings(
+                        sign=self.conf.as_bool("sign"),
+                        repository_url=self.conf["TWINE_REPOSITORY"],
+                        username=self.conf["TWINE_USERNAME"],
+                        identity=self.conf.get("identity"),
+                        password=self.conf["TWINE_PASSWORD"],
+                        comment=self.conf.get("comment"),
+                        sign_with=self.conf.get("sign-with"),
+                        config_file=self.confpath,
+                        skip_existing= self.conf.get("skip-existing", True)
+                    )
+                    ["dist/*{0}*".format(__version__)]
+                )
 
         except requests.exceptions.HTTPError as err:
             print(err)
