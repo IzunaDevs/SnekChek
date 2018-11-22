@@ -6,7 +6,7 @@ import sys
 import configobj
 
 if sys.version_info < (3, 0, 0):
-    input = raw_input  # flake8: noqa pylint: disable=all
+    input = raw_input  # noqa pylint: disable=all
 
 
 class ConfigGenerator:

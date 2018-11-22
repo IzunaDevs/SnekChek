@@ -73,7 +73,7 @@ class Pypi(Linter):
                         skip_existing=self.conf.get("skip-existing", True)), [
                             "dist/*{0}*".format(
                                 self.conf.get("version", __version__))
-                        ])  # flake8: noqa
+                        ])  # noqa
 
         except requests.exceptions.HTTPError as err:
             print(err)
