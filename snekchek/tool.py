@@ -71,7 +71,7 @@ class Pypi(Linter):
                         sign_with=self.conf.get("sign-with"),
                         config_file=self.confpath,
                         skip_existing=self.conf.get("skip-existing", True)
-                    )
+                    ),
                     ["dist/*{0}*".format(self.conf.get("version", __version__))]
                 )
 
