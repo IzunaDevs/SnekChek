@@ -51,6 +51,7 @@ class Pypi(Linter):
     def run(self, _: list) -> None:
         import requests
         import twine.commands.upload
+        import twine.settings
 
         try:
             with redirect_stdout(io.StringIO()), \
