@@ -8,7 +8,7 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-#  - "3.7-dev"  # Forgot we need libyaml to test ourselves
+  - "3.7"
 
 install:
   - "pip install -r requirements-ci.txt"

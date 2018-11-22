@@ -27,7 +27,7 @@ Linters supported:
 # Stdlib
 import argparse
 
-# External Libraries
+# Snekchek
 from snekchek.config_gen import generate
 from snekchek.lint import get_linters
 from snekchek.secure import get_security

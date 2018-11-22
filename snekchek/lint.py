@@ -23,7 +23,7 @@ import io
 import json
 import re
 
-# External Libraries
+# Snekchek
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stderr, redirect_stdout
 
@@ -35,8 +35,9 @@ def get_linters() -> list:
 class Flake8(Linter):
     requires_install = ["flake8"]
 
-    patt = re.compile(r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
-                      r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
+    patt = re.compile(
+        r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
+        r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
 
     def run(self, files: list) -> None:
         import flake8.main.cli
@@ -54,9 +55,8 @@ class Flake8(Linter):
         self.status_code = 1 if matches else 0
         self.hook(
             list(
-                sorted(
-                    [x.groupdict() for x in matches],
-                    key=lambda x: x["line"])))
+                sorted([x.groupdict() for x in matches],
+                       key=lambda x: x["line"])))
 
 
 class Vulture(Linter):
@@ -82,9 +82,8 @@ class Vulture(Linter):
         self.status_code = 1 if matches else 0
         self.hook(
             list(
-                sorted(
-                    [x.groupdict() for x in matches],
-                    key=lambda x: x["line"])))
+                sorted([x.groupdict() for x in matches],
+                       key=lambda x: x["line"])))
 
 
 class Pylint(Linter):

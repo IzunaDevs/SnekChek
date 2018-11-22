@@ -7,7 +7,7 @@ import re
 import subprocess  # noqa: B404
 import sys
 
-# External Libraries
+# Snekchek
 import snekchek.format
 
 
@@ -74,7 +74,8 @@ class CheckHandler:
 
         proc.wait()
 
-        matches = list(patt.finditer(proc.stdout.read().decode()))[2:]  # [2:] to remove title and the dashes
+        matches = list(patt.finditer(proc.stdout.read().decode()))[
+            2:]  # [2:] to remove title and the dashes
 
         self.installed = [p.group("package") for p in matches]
 

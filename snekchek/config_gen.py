@@ -6,7 +6,7 @@ import sys
 import configobj
 
 if sys.version_info < (3, 0, 0):
-    input = raw_input
+    input = raw_input  # flake8: noqa pylint: disable=all
 
 
 class ConfigGenerator:
@@ -80,7 +80,8 @@ class ConfigGenerator:
         print("Written config file!")
 
         if "pylint" in tools:
-            print("Please also run `pylint --generate-rcfile` to complete setup")
+            print(
+                "Please also run `pylint --generate-rcfile` to complete setup")
 
 
 def ask_bool(question: str, default: bool = True) -> bool:
@@ -124,8 +125,8 @@ def ask_path(question: str, default: str = None) -> str:
     if os.path.isdir(answer):
         return answer
 
-    print("No such directory: {answer}, please try again".format(
-        answer=answer))
+    print(
+        "No such directory: {answer}, please try again".format(answer=answer))
     return ask_path(question, default)
 
 

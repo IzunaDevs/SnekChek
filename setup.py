@@ -1,5 +1,7 @@
 # External Libraries
 from setuptools import setup, find_packages
+
+# Snekchek
 from snekchek import misc
 from snekchek.lint import get_linters
 from snekchek.secure import get_security

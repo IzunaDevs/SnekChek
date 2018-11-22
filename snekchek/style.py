@@ -9,7 +9,7 @@ Stylers included:
 # Stdlib
 import io
 
-# External Libraries
+# Snekchek
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stdout
 
@@ -37,9 +37,8 @@ class ISort(Linter):
             if sort.skipped:
                 continue
 
-            self.status_code = self.status_code or (1
-                                                    if sort.incorrectly_sorted
-                                                    else 0)
+            self.status_code = self.status_code or (
+                1 if sort.incorrectly_sorted else 0)
 
             if self.conf.as_bool('inplace'):
                 with open(filename, "w") as file:

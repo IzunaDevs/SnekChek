@@ -13,7 +13,7 @@ import os
 import subprocess  # noqa: B404
 import sys
 
-# External Libraries
+# Snekchek
 from snekchek.misc import __version__
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stderr, redirect_stdout
@@ -70,10 +70,10 @@ class Pypi(Linter):
                         comment=self.conf.get("comment"),
                         sign_with=self.conf.get("sign-with"),
                         config_file=self.confpath,
-                        skip_existing=self.conf.get("skip-existing", True)
-                    ),
-                    ["dist/*{0}*".format(self.conf.get("version", __version__))]
-                )
+                        skip_existing=self.conf.get("skip-existing", True)), [
+                            "dist/*{0}*".format(
+                                self.conf.get("version", __version__))
+                        ])  # flake8: noqa
 
         except requests.exceptions.HTTPError as err:
             print(err)

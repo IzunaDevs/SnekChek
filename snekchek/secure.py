@@ -11,7 +11,7 @@ import io
 import json
 import os
 
-# External Libraries
+# Snekchek
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stdout
 
