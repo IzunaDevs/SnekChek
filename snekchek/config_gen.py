@@ -1,8 +1,12 @@
 # Stdlib
 import os
+import sys
 
 # External Libraries
 import configobj
+
+if sys.version_info < (3, 0, 0):
+    input = raw_input
 
 
 class ConfigGenerator:
@@ -69,15 +73,14 @@ class ConfigGenerator:
 
         tools = self.get_tools()
         for tool in tools:
-            conf[tool] = getattr(self, tool)()
+            conf[tool] = getattr(self, tool)()  # pylint: disable=assignment-from-no-return
         conf.filename = path
         conf.write()
 
         print("Written config file!")
 
         if "pylint" in tools:
-            print(
-                "Please also run `pylint --generate-rcfile` to complete setup")
+            print("Please also run `pylint --generate-rcfile` to complete setup")
 
 
 def ask_bool(question: str, default: bool = True) -> bool:
@@ -117,7 +120,8 @@ def ask_path(question: str, default: str = None) -> str:
 
     if answer == "":
         return default
-    elif os.path.isdir(answer):
+
+    if os.path.isdir(answer):
         return answer
 
     print("No such directory: {answer}, please try again".format(

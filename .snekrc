@@ -4,7 +4,7 @@ linters = flake8, pylint, yapf, isort, pyroma, safety, dodgy, vulture, pytest, p
 [flake8]
 max-line-length=100
 exclude=build,tests
-ignore=I100,I101,I201,B101,I900,B322
+ignore=I100,I101,I201,B101,I900,B322,S404,S322,S603
 
 [isort]
 line_length=100
