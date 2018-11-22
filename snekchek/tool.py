@@ -63,7 +63,7 @@ class Pypi(Linter):
                 twine.commands.upload.upload(
                     twine.settings.Settings(
                         sign=self.conf.as_bool("sign"),
-                        repository_url=self.conf["TWINE_REPOSITORY"],
+                        repository=self.conf["TWINE_REPOSITORY"],
                         username=self.conf["TWINE_USERNAME"],
                         identity=self.conf.get("identity"),
                         password=self.conf["TWINE_PASSWORD"],
