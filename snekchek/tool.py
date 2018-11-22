@@ -60,7 +60,7 @@ class Pypi(Linter):
                     stdout=subprocess.DEVNULL)
                 proc.wait()
                 twine.commands.upload.upload(
-                    twine.Settings(
+                    twine.settings.Settings(
                         sign=self.conf.as_bool("sign"),
                         repository_url=self.conf["TWINE_REPOSITORY"],
                         username=self.conf["TWINE_USERNAME"],
