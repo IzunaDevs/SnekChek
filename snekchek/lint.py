@@ -99,9 +99,10 @@ class Pylint(Linter):
         file.seek(0)
 
         text = file.read()
-        self.status_code = 1 if text.strip() else 0
-
         data = json.loads(text) if text.strip() else []
+        
+        self.status_code = bool(data)
+        
         self.hook(data)
 
 
