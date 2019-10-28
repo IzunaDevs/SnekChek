@@ -3,7 +3,7 @@ u"""Base config for entry points."""
 # Stdlib
 import os
 
-# Snekchek
+# External Libraries
 import configobj
 
 __all__ = (u"config", )

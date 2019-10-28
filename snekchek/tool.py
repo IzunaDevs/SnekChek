@@ -61,11 +61,17 @@ class Pypi(Linter):
 
                 if sys.version_info >= (3, 0, 0):
                     proc = subprocess.Popen(  # noqa: B603
-                        [sys.executable, u"setup.py", u"sdist", u"bdist_wheel"],
+                        [
+                            sys.executable, u"setup.py", u"sdist",
+                            u"bdist_wheel"
+                        ],
                         stdout=subprocess.DEVNULL)
                 else:
                     proc = subprocess.Popen(  # noqa: B603
-                        [sys.executable, u"setup.py", u"sdist", u"bdist_wheel"])
+                        [
+                            sys.executable, u"setup.py", u"sdist",
+                            u"bdist_wheel"
+                        ])
                 proc.wait()
                 twine.commands.upload.upload(
                     twine.settings.Settings(

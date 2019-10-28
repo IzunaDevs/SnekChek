@@ -58,7 +58,9 @@ disable=missing-docstring,
         # Only for py2 things below
         redefined-builtin,  # for 'file' builtin
         deprecated-lambda,  # flatten function
-        no-member           # subprocess.DEVNULL
+        no-member,          # subprocess.DEVNULL
+        # Only for py2 things below
+        useless-object-inheritance
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

@@ -5,7 +5,7 @@ from __future__ import print_function
 import os
 import sys
 
-# Snekchek
+# External Libraries
 import configobj
 
 if sys.version_info < (3, 0, 0):
