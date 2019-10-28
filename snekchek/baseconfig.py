@@ -70,5 +70,13 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
     u"dodgy": {
         u"quiet": False,
         u"ignore_paths": []
+    },
+    u"pytest": {
+        u"quiet": False,
+        u"testpaths": "tests"
+    },
+    u"unittest": {
+        u"quiet": False,
+        u"testpaths": "tests"
     }
 })

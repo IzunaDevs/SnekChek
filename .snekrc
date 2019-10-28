@@ -1,5 +1,5 @@
 [all]
-linters = flake8, pylint, yapf, isort, pyroma, dodgy, vulture, pytest, pypi
+linters = flake8, pylint, yapf, isort, pyroma, dodgy, vulture, pytest, unittest, pypi
 
 [flake8]
 max-line-length=100
@@ -27,4 +27,7 @@ min-confidence=0
 [style]  # needed for yapf, made an issue to their repo to allow [yapf] in non-`setup.cfg` files
 
 [pytest]
+testpaths=tests
+
+[unittest]
 testpaths=tests

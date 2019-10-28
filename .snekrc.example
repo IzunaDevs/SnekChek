@@ -21,3 +21,5 @@ indent = '    '
 [vulture]
 min-confidence = 60
 
+[unittest]
+testpaths=tests

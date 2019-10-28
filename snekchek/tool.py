@@ -22,7 +22,7 @@ from snekchek.utils import redirect_stderr, redirect_stdout
 
 
 def get_tools():
-    return Pytest, Pypi
+    return Pytest, UnitTest, Pypi
 
 
 class Pytest(Linter):
@@ -45,6 +45,31 @@ class Pytest(Linter):
             test for test in data[u"report"][u"tests"]
             if test[u"outcome"] == u"failed"
         ])
+
+
+class UnitTest(Linter):
+    def run(self, _):
+        from unittest.main import TestProgram
+
+        status = 0
+        errors = []
+
+        if sys.version_info >= (3, 0, 0):
+            fileo = io.StringIO()
+        else:
+            fileo = io.BytesIO()
+
+        with redirect_stderr(fileo):
+            for file in os.listdir(self.conf["testpaths"]):
+                test_name = file.split(".")[0]
+                module = "{0}.{1}".format(self.conf["testpaths"], test_name)
+                prog = TestProgram(module, exit=False)
+                status += prog.result.wasSuccessful()
+                errors += prog.result.errors
+
+        fileo.seek(0)
+        self.status_code = status
+        self.hook(errors)
 
 
 class Pypi(Linter):
