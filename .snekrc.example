@@ -1,5 +1,5 @@
 [all]
-linters = flake8, pylint, yapf, isort, pyroma, safety, bandit, dodgy, vulture, pytest, pypi
+linters = flake8, pylint, yapf, isort, pyroma, safety, dodgy, vulture, pytest, pypi
 
 [pypi]
 twine_username = abc
