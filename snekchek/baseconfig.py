@@ -1,74 +1,74 @@
-"""Base config for entry points."""
+u"""Base config for entry points."""
 
 # Stdlib
 import os
 
-# External Libraries
+# Snekchek
 import configobj
 
-__all__ = ("config", )
+__all__ = (u"config", )
 
 config = configobj.ConfigObj({  # pylint: disable=invalid-name
-    "all": {
-        "linters": [
-            "flake8", "pylint", "yapf", "isort", "pyroma", "safety", "dodgy",
-            "vulture", "pytest", "pypi"
+    u"all": {
+        u"linters": [
+            u"flake8", u"pylint", u"yapf", u"isort", u"pyroma", u"safety",
+            u"dodgy", u"vulture", u"pytest", u"pypi"
         ]
     },
-    "pypi": {
-        "TWINE_USERNAME": os.environ.get("TWINE_USERNAME", "abc"),
-        "TWINE_PASSWORD": os.environ.get("TWINE_PASSWORD", "abc"),
-        "sign": False,
-        "TWINE_REPOSITORY": "pypi",
-        "quiet": False
+    u"pypi": {
+        u"TWINE_USERNAME": os.environ.get(u"TWINE_USERNAME", u"abc"),
+        u"TWINE_PASSWORD": os.environ.get(u"TWINE_PASSWORD", u"abc"),
+        u"sign": False,
+        u"TWINE_REPOSITORY": u"pypi",
+        u"quiet": False
     },
-    "flake8": {
-        "max-line-length": 79,
-        "exclude": ["build", "dist"],
-        "ignore": [],
-        "quiet": False
+    u"flake8": {
+        u"max-line-length": 79,
+        u"exclude": [u"build", u"dist"],
+        u"ignore": [],
+        u"quiet": False
     },
-    "pylint": {
-        "quiet": False
+    u"pylint": {
+        u"quiet": False
     },
-    "yapf": {
-        "inplace": True,
-        "quiet": False
+    u"yapf": {
+        u"inplace": True,
+        u"quiet": False
     },
-    "isort": {
-        "line_length": 79,
-        "multi_line_output": True,
-        "inplace": True,
-        "indent": '    ',
-        "sections":
-        "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER".split(","),
-        "quiet": False
+    u"isort": {
+        u"line_length": 79,
+        u"multi_line_output": True,
+        u"inplace": True,
+        u"indent": u"    ",
+        u"sections":
+        u"FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER".split(u","),
+        u"quiet": False
     },
-    "bandit": {
-        "quiet": False
+    u"bandit": {
+        u"quiet": False
     },
-    "style": {
-        "inplace": True,
-        "quiet": False
+    u"style": {
+        u"inplace": True,
+        u"quiet": False
     },
-    "pyroma": {
-        "quiet": False
+    u"pyroma": {
+        u"quiet": False
     },
-    "vulture": {
-        "min-confidence": 60,
-        "verbose": False,
-        "exclude": [],
-        "sort-by-size": False,
-        "quiet": False
+    u"vulture": {
+        u"min-confidence": 60,
+        u"verbose": False,
+        u"exclude": [],
+        u"sort-by-size": False,
+        u"quiet": False
     },
-    "safety": {
-        "quiet": False,
-        "ignore": [],
-        "pyup_key": '',
-        "db_path": ''
+    u"safety": {
+        u"quiet": False,
+        u"ignore": [],
+        u"pyup_key": "",
+        u"db_pathu": ""
     },
-    "dodgy": {
-        "quiet": False,
-        "ignore_paths": []
+    u"dodgy": {
+        u"quiet": False,
+        u"ignore_paths": []
     }
 })

@@ -1,4 +1,4 @@
-"""
+u"""
 Linter/Styler/Checker combined for linters.
 
 Linters supported:
@@ -23,6 +23,8 @@ Linters supported:
 - pytest
 - Upload to pypi
 """
+# __future__ imports
+from __future__ import absolute_import
 
 # Stdlib
 import argparse
@@ -30,14 +32,12 @@ import argparse
 # Snekchek
 from snekchek.config_gen import generate
 from snekchek.lint import get_linters
-from snekchek.secure import get_security
 from snekchek.structure import CheckHandler
 from snekchek.style import get_stylers
-from snekchek.tool import get_tools
 
 
-def run_main(args: argparse.Namespace, do_exit=True) -> None:
-    """Runs the checks and exits.
+def run_main(args, do_exit=True):
+    u"""Runs the checks and exits.
 
     To extend this tool, use this function and set do_exit to False
     to get returned the status code.
@@ -46,14 +46,19 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
         generate()
         return None  # exit after generate instead of starting to lint
 
-    handler = CheckHandler(
-        file=args.config_file, out_json=args.json, files=args.files)
+    handler = CheckHandler(file=args.config_file,
+                           out_json=args.json,
+                           files=args.files)
 
     for style in get_stylers():
         handler.run_linter(style())
 
     for linter in get_linters():
         handler.run_linter(linter())
+
+    # Somehow one of the linters clears globals in py2?
+    from snekchek.secure import get_security
+    from snekchek.tool import get_tools
 
     for security in get_security():
         handler.run_linter(security())
@@ -62,7 +67,7 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
         tool = tool()
 
         # Only run pypi if everything else passed
-        if tool.name == "pypi" and handler.status_code != 0:
+        if tool.name == u"pypi" and handler.status_code != 0:
             continue
 
         handler.run_linter(tool)
@@ -72,29 +77,30 @@ def run_main(args: argparse.Namespace, do_exit=True) -> None:
     return handler.status_code
 
 
-def main() -> None:
-    """Main entry point for console commands."""
+def main():
+    u"""Main entry point for console commands."""
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--json",
-        help="output in JSON format",
-        action="store_true",
-        default=False)
-    parser.add_argument(
-        "--config-file", help="Select config file to use", default=".snekrc")
-    parser.add_argument(
-        'files',
-        metavar='file',
-        nargs='*',
-        default=[],
-        help='Files to run checks against')
-    parser.add_argument(
-        "--init", help="generate snekrc", action="store_true", default=False)
+    parser.add_argument(u"--json",
+                        help=u"output in JSON format",
+                        action=u"store_true",
+                        default=False)
+    parser.add_argument(u"--config-file",
+                        help=u"Select config file to use",
+                        default=u".snekrc")
+    parser.add_argument(u"files",
+                        metavar=u"file",
+                        nargs=u"*",
+                        default=[],
+                        help=u"Files to run checks against")
+    parser.add_argument(u"--init",
+                        help=u"generate snekrc",
+                        action=u"store_true",
+                        default=False)
 
     args = parser.parse_args()
 
     run_main(args)
 
 
-if __name__ == "__main__":
+if __name__ == u"__main__":
     main()

@@ -1,10 +1,12 @@
-"""
+u"""
 This file contains Style checkers.
 
 Stylers included:
 - isort
 - yapf
 """
+# __future__ imports
+from __future__ import with_statement
 
 # Stdlib
 import io
@@ -14,19 +16,20 @@ from snekchek.structure import Linter
 from snekchek.utils import redirect_stdout
 
 
-def get_stylers() -> list:
+def get_stylers():
     return ISort, Yapf
 
 
 class ISort(Linter):
-    requires_install = ["isort"]
+    requires_install = [u"isort"]
 
-    def run(self, files: list) -> None:
+    def run(self, files):
         import isort
 
-        self.conf['line_length'] = self.conf.as_int('line_length')
-        self.conf['sections'] = self.conf.as_list('sections')
-        self.conf['multi_line_output'] = self.conf.as_int('multi_line_output')
+        self.conf[u"line_length"] = self.conf.as_int(u"line_length")
+        self.conf[u"sections"] = self.conf.as_list(u"sections")
+        self.conf[u"multi_line_output"] = self.conf.as_int(
+            u"multi_line_output")
 
         res = []
 
@@ -40,8 +43,8 @@ class ISort(Linter):
             self.status_code = self.status_code or (
                 1 if sort.incorrectly_sorted else 0)
 
-            if self.conf.as_bool('inplace'):
-                with open(filename, "w") as file:
+            if self.conf.as_bool(u"inplace"):
+                with open(filename, u"w") as file:
                     file.write(sort.output)
 
             else:
@@ -59,10 +62,10 @@ class ISort(Linter):
 
 
 class Yapf(Linter):
-    requires_install = ["yapf"]
+    requires_install = [u"yapf"]
     base_pyversion = (3, 4, 0)
 
-    def run(self, files: list) -> None:
+    def run(self, files):
         import yapf.yapflib.yapf_api
 
         res = []
@@ -75,8 +78,8 @@ class Yapf(Linter):
 
             if changed:
 
-                if self.conf.as_bool('inplace'):
-                    with open(file, "w") as new_file:
+                if self.conf.as_bool(u"inplace"):
+                    with open(file, u"w") as new_file:
                         new_file.write(code)
 
                 else:

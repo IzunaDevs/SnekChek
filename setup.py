@@ -21,41 +21,40 @@ for group in [get_linters(), get_security(), get_stylers(), get_tools()]:
         EXTRAS[linter.__name__.lower()] = linter.requires_install
 
 if __name__ == '__main__':
-    setup(
-        name="snekchek",
-        author="izunadevs",
-        author_email="izunadevs@martmists.com",
-        maintainer="martmists",
-        maintainer_email="mail@martmists.com",
-        license="MIT",
-        zip_safe=False,
-        version=misc.__version__,
-        description=misc.description,
-        long_description=README,
-        url="https://github.com/IzunaDevs/SnekChek",
-        packages=find_packages(),
-        install_requires=REQUIREMENTS,
-        extras_require=EXTRAS,
-        entry_points={
-            "console_scripts": ["snekchek = snekchek.__main__:main"]
-        },
-        keywords=[
-            "lint", "python", "pylint", "flake8", "isort", "vulture", "bandit",
-            "dodgy", "safety", "pytest", "pyroma", "pypi", "yapf", "snekchek",
-            "snekrc"
-        ],
-        classifiers=[
-            "Development Status :: 5 - Production/Stable",
-            "Environment :: Console", "Intended Audience :: Developers",
-            "License :: OSI Approved :: MIT License",
-            "Operating System :: OS Independent",
-            "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.3",
-            "Programming Language :: Python :: 3.4",
-            "Programming Language :: Python :: 3.5",
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
-            "Topic :: Software Development :: Quality Assurance",
-            "Topic :: Software Development :: Libraries :: Python Modules"
-        ],
-        python_requires=">=3.0")
+    setup(name="snekchek",
+          author="izunadevs",
+          author_email="izunadevs@martmists.com",
+          maintainer="martmists",
+          maintainer_email="mail@martmists.com",
+          license="MIT",
+          zip_safe=False,
+          version=misc.__version__,
+          description=misc.description,
+          long_description=README,
+          url="https://github.com/IzunaDevs/SnekChek",
+          packages=find_packages(),
+          install_requires=REQUIREMENTS,
+          extras_require=EXTRAS,
+          entry_points={
+              "console_scripts": ["snekchek = snekchek.__main__:main"]
+          },
+          keywords=[
+              "lint", "python", "pylint", "flake8", "isort", "vulture",
+              "bandit", "dodgy", "safety", "pytest", "pyroma", "pypi", "yapf",
+              "snekchek", "snekrc"
+          ],
+          classifiers=[
+              "Development Status :: 5 - Production/Stable",
+              "Environment :: Console", "Intended Audience :: Developers",
+              "License :: OSI Approved :: MIT License",
+              "Operating System :: OS Independent",
+              "Programming Language :: Python :: 3",
+              "Programming Language :: Python :: 3.3",
+              "Programming Language :: Python :: 3.4",
+              "Programming Language :: Python :: 3.5",
+              "Programming Language :: Python :: 3.6",
+              "Programming Language :: Python :: 3.7",
+              "Topic :: Software Development :: Quality Assurance",
+              "Topic :: Software Development :: Libraries :: Python Modules"
+          ],
+          python_requires=">=3.0")

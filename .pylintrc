@@ -50,7 +50,15 @@ confidence=
 # --enable=similarities". If you want to run only the classes checker, but have
 # no Warning level messages displayed, use"--disable=all --enable=classes
 # --disable=W"
-disable=missing-docstring,too-many-instance-attributes,wrong-import-order,import-error,too-few-public-methods
+disable=missing-docstring,
+        too-many-instance-attributes,
+        wrong-import-order,
+        import-error,
+        too-few-public-methods,
+        # Only for py2 things below
+        redefined-builtin,  # for 'file' builtin
+        deprecated-lambda,  # flatten function
+        no-member           # subprocess.DEVNULL
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

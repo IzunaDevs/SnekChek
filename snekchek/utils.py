@@ -1,4 +1,4 @@
-"""
+u"""
 This module provides redirect_* functions for Python <3.5
 """
 
@@ -6,7 +6,7 @@ This module provides redirect_* functions for Python <3.5
 import sys
 
 
-class _RedirectStream:
+class _RedirectStream(object):
     _stream = None
 
     def __init__(self, new_target):
@@ -24,7 +24,7 @@ class _RedirectStream:
 
 
 class redirect_stdout(_RedirectStream):  # pylint: disable=invalid-name
-    """Context manager for temporarily redirecting stdout to another file.
+    u"""Context manager for temporarily redirecting stdout to another file.
         # How to send help() to stderr
         with redirect_stdout(sys.stderr):
             help(dir)
@@ -34,10 +34,10 @@ class redirect_stdout(_RedirectStream):  # pylint: disable=invalid-name
                 help(pow)
     """
 
-    _stream = "stdout"
+    _stream = u"stdout"
 
 
 class redirect_stderr(_RedirectStream):  # pylint: disable=invalid-name
-    """Context manager for temporarily redirecting stderr to another file."""
+    u"""Context manager for temporarily redirecting stderr to another file."""
 
-    _stream = "stderr"
+    _stream = u"stderr"

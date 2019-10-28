@@ -1,4 +1,6 @@
-""" Common classes and utility functions. """
+u""" Common classes and utility functions. """
+# __future__ imports
+from __future__ import print_function
 
 # Stdlib
 import json
@@ -11,21 +13,27 @@ import sys
 import snekchek.format
 
 
-def flatten(nested_list: list) -> list:
-    """Flattens a list, ignore all the lambdas."""
-    return list(sorted(filter(lambda y: y is not None,
-                              list(map(lambda x: (nested_list.extend(x)  # noqa: T484
-                                                  if isinstance(x, list) else x),
-                                       nested_list)))))
+def flatten(nested_list):
+    u"""Flattens a list, ignore all the lambdas."""
+    return list(
+        sorted(
+            filter(
+                lambda y: y is not None,
+                list(
+                    map(
+                        lambda x: (
+                            nested_list.extend(x)  # noqa: T484
+                            if isinstance(x, list) else x),
+                        nested_list)))))
 
 
-def get_py_files(dir_name: str) -> list:
-    """Get all .py files."""
+def get_py_files(dir_name):
+    u"""Get all .py files."""
     return flatten([
         x for x in
-        [["{0}/{1}".format(path, f) for f in files if f.endswith(".py")]
+        [[u"{0}/{1}".format(path, f) for f in files if f.endswith(u".py")]
          for path, _, files in os.walk(dir_name)
-         if not path.startswith("./build")] if x
+         if not path.startswith(u"./build")] if x
     ])
 
 
@@ -33,25 +41,21 @@ class ModuleNotInstalled(Exception):
     pass
 
 
-class CheckHandler:
-    def __init__(self,
-                 file: str,
-                 out_json: bool,
-                 check_dir: str = ".",
-                 files=None):
+class CheckHandler(object):
+    def __init__(self, file, out_json, check_dir=u".", files=None):
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
         if not os.path.isfile(file):
-            print("config file not found: {0}".format(file))
-            if file != ".snekrc":
-                print("trying snekrc...")
-                if not os.path.isfile(".snekrc"):
-                    print("no config found falling back to default")
+            print(u"config file not found: {0}".format(file))
+            if file != u".snekrc":
+                print(u"trying snekrc...")
+                if not os.path.isfile(u".snekrc"):
+                    print(u"no config found falling back to default")
                 else:
-                    file = ".snekrc"
+                    file = u".snekrc"
             else:
-                print("no config found falling back to default")
+                print(u"no config found falling back to default")
         self.parser = config
         self.parser.merge(configobj.ConfigObj(file))
 
@@ -61,13 +65,14 @@ class CheckHandler:
         self.current = ''
         self.json = out_json
 
-        self.indent = 4 if "--debug" in sys.argv else None
+        self.indent = 4 if u"--debug" in sys.argv else None
 
         self.files = files or get_py_files(check_dir)
 
-        patt = re.compile(r"^(?P<package>\S+?)\s*(?P<version>\S+)\s*$", re.M)
+        patt = re.compile(u"^(?P<package>\\S+?)\\s*(?P<version>\\S+)\\s*$",
+                          re.M)
 
-        args = [sys.executable, '-m', 'pip', 'list']
+        args = [sys.executable, u"-m", u"pip", u"list"]
 
         proc = subprocess.Popen(  # noqa: B603
             args, stdout=subprocess.PIPE)
@@ -77,34 +82,34 @@ class CheckHandler:
         matches = list(patt.finditer(proc.stdout.read().decode()))[
             2:]  # [2:] to remove title and the dashes
 
-        self.installed = [p.group("package") for p in matches]
+        self.installed = [p.group(u"package") for p in matches]
 
-    def exit(self) -> None:
-        """Raise SystemExit with correct status code and output logs."""
+    def exit(self):
+        u"""Raise SystemExit with correct status code and output logs."""
         total = sum(len(logs) for logs in self.logs.values())
         if self.json:
-            self.logs['total'] = total
+            self.logs[u"total"] = total
             print(json.dumps(self.logs, indent=self.indent))
 
         else:
             for name, log in self.logs.items():
-                if not log or self.parser[name].as_bool("quiet"):
+                if not log or self.parser[name].as_bool(u"quiet"):
                     continue
 
-                print("[[{0}]]".format(name))
-                getattr(snekchek.format, name + "_format")(log)
-                print("\n")
+                print(u"[[{0}]]".format(name))
+                getattr(snekchek.format, name + u"_format")(log)
+                print(u"\n")
 
-            print("-" * 30)
-            print("Total:", total)
+            print(u"-" * 30)
+            print(u"Total:", total)
 
         sys.exit(self.status_code)
 
-    def run_linter(self, linter) -> None:
-        """Run a checker class"""
+    def run_linter(self, linter):
+        u"""Run a checker class"""
         self.current = linter.name
 
-        if (linter.name not in self.parser["all"].as_list("linters")
+        if (linter.name not in self.parser[u"all"].as_list(u"linters")
                 or linter.base_pyversion > sys.version_info):  # noqa: W503
             return
 
@@ -116,15 +121,15 @@ class CheckHandler:
         linter.run(self.files)
         self.status_code = self.status_code or linter.status_code
 
-    def out_func(self, data) -> None:
+    def out_func(self, data):
         self.logs[self.current] = data
 
 
-class Linter:
-    """Common shared class for all linters/stylers/tools"""
+class Linter(object):
+    u"""Common shared class for all linters/stylers/tools"""
 
     requires_install = []
-    base_pyversion = (3, 0, 0)
+    base_pyversion = (2, 7, 0)
 
     def __init__(self):
         self.status_code = 0
@@ -132,10 +137,10 @@ class Linter:
         self.confpath = None
         self.conf = None
 
-    def add_output_hook(self, func) -> None:
+    def add_output_hook(self, func):
         self.hook = func
 
-    def set_config(self, confpath: str, section) -> None:
+    def set_config(self, confpath, section):
         self.confpath = confpath
         self.conf = section
 

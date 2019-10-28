@@ -1,4 +1,4 @@
-"""
+u"""
 This file contains linters.
 
 Linters included:
@@ -18,130 +18,155 @@ Linters included:
 - pyroma
 """
 
+# __future__ imports
+from __future__ import print_function, with_statement
+
 # Stdlib
 import io
 import json
 import re
+import sys
 
 # Snekchek
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stderr, redirect_stdout
 
 
-def get_linters() -> list:
+def get_linters():
     return Vulture, Pylint, Pyroma, Flake8
 
 
 class Flake8(Linter):
-    requires_install = ["flake8"]
+    requires_install = [u"flake8"]
 
     patt = re.compile(
-        r"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
-        r"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\n", re.M)
+        u"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
+        u"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\\n", re.M)
 
-    def run(self, files: list) -> None:
+    def run(self, files):
         import flake8.main.cli
 
-        file = io.StringIO()
-        with redirect_stdout(file):
+        if sys.version_info >= (3, 0, 0):
+            t = io.StringIO
+        else:
+            t = io.BytesIO
+        file = t()
+        with redirect_stdout(file) and redirect_stderr(t()):
             try:
-                sett = ["--config=" + self.confpath]
+                sett = [u"--config=" + self.confpath]
                 sett.extend(files)
                 flake8.main.cli.main(sett)
             except SystemExit:
-                print("aaa")
+                pass
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
         self.hook(
             list(
                 sorted([x.groupdict() for x in matches],
-                       key=lambda x: x["line"])))
+                       key=lambda x: x[u"line"])))
 
 
 class Vulture(Linter):
-    requires_install = ["vulture"]
+    requires_install = [u"vulture"]
+    base_pyversion = (3, 0, 0)
 
     patt = re.compile(
-        r"^(?P<path>[^:]+):(?P<line>[0-9]+): "
-        r"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
-        r"\((?P<conf>[0-9]+)% confidence\)$")
+        u"^(?P<path>[^:]+):(?P<line>[0-9]+): "
+        u"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
+        u"\\((?P<conf>[0-9]+)% confidence\\)$")
 
-    def run(self, files: list) -> None:
+    def run(self, files):
         import vulture.core
 
-        vult = vulture.core.Vulture(self.conf.as_bool('verbose'))
-        vult.scavenge(files, [x.strip() for x in self.conf.as_list("exclude")])
-        file = io.StringIO()
+        vult = vulture.core.Vulture(self.conf.as_bool(u"verbose"))
+        vult.scavenge(files,
+                      [x.strip() for x in self.conf.as_list(u"exclude")])
+        if sys.version_info >= (3, 0, 0):
+            file = io.StringIO()
+        else:
+            file = io.BytesIO()
         with redirect_stdout(file):
-            vult.report(
-                self.conf.as_int("min-confidence"),
-                self.conf.as_bool("sort-by-size"))
+            vult.report(self.conf.as_int(u"min-confidence"),
+                        self.conf.as_bool(u"sort-by-size"))
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
         self.hook(
             list(
                 sorted([x.groupdict() for x in matches],
-                       key=lambda x: x["line"])))
+                       key=lambda x: x[u"line"])))
 
 
 class Pylint(Linter):
-    requires_install = ["pylint"]
+    requires_install = [u"pylint"]
 
-    def run(self, files: list) -> None:
+    def run(self, files):
         import pylint.lint
 
-        args = ["-f", "json"] + files
-        file = io.StringIO()
+        args = [u"-f", u"json"] + files
+        if sys.version_info >= (3, 0, 0):
+            file = io.StringIO()
+        else:
+            file = io.BytesIO()
         with redirect_stdout(file):
-            pylint.lint.Run(args, do_exit=False)
+            if sys.version_info >= (3, 0, 0):
+                pylint.lint.Run(args, do_exit=False)
+            else:
+                pylint.lint.Run(args, exit=False)
         file.seek(0)
 
         text = file.read()
         data = json.loads(text) if text.strip() else []
-        
+
         self.status_code = bool(data)
-        
+
         self.hook(data)
 
 
 class Pyroma(Linter):
-    requires_install = ["pyroma"]
+    requires_install = [u"pyroma"]
 
-    def run(self, _: list) -> None:
-        file = io.StringIO()
-        with redirect_stdout(file), redirect_stderr(io.StringIO()):
+    def run(self, _):
+
+        if sys.version_info >= (3, 0, 0):
+            t = io.StringIO
+        else:
+            t = io.BytesIO
+
+        file = t()
+        with redirect_stdout(file), redirect_stderr(t()):
             # Import pyroma here because it uses logging and sys.stdout
             import pyroma  # noqa pylint: disable=all
-            pyroma.run('directory', '.')
+            pyroma.run(u"directory", u".")
         file.seek(0)
 
         text = file.read()
 
-        lines = text.split("\n")
+        lines = text.split(u"\n")
 
         lines.pop(0)
-        lines.pop(0)
+        if sys.version_info >= (3, 0, 0):
+            lines.pop(0)
 
-        data = {'modules': {}}
+        data = {u"modules": {}}
 
         module = lines.pop(0)[6:].strip()
-        data['modules'][module] = []
+        data[u"modules"][module] = []
         lines.pop(0)
         if len(lines) >= 6:
             line = lines.pop(0)
-            while line != "-" * 30:
-                data['modules'][module].append(line)
+            while line != u"-" * 30:
+                data[u"modules"][module].append(line)
                 line = lines.pop(0)
 
         rating = lines.pop(0)
-        data['rating'] = int(rating[14:-3])
-        data['rating_word'] = lines.pop(0)
+        data[u"rating"] = int(rating[14:-3])
+        data[u"rating_word"] = lines.pop(0)
 
-        self.status_code = 0 if data['rating'] == 10 else 1
+        self.status_code = 0 if data[u"rating"] == 10 else 1
 
-        if data['rating'] == 10:
+        if data[u"rating"] == 10:
             data = []
 
         self.hook(data)
