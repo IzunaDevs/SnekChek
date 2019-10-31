@@ -30,6 +30,8 @@ from __future__ import absolute_import
 import argparse
 
 # Snekchek
+from pathlib import Path
+
 from snekchek.config_gen import generate
 from snekchek.lint import get_linters
 from snekchek.structure import CheckHandler
@@ -42,9 +44,9 @@ def run_main(args, do_exit=True):
     To extend this tool, use this function and set do_exit to False
     to get returned the status code.
     """
-    if args.init:
+    if args.init or not Path(args.config_file).exists():
         generate()
-        return None  # exit after generate instead of starting to lint
+        return None  # exit after generating instead of starting to lint
 
     handler = CheckHandler(file=args.config_file,
                            out_json=args.json,
