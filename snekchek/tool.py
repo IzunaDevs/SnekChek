@@ -58,7 +58,6 @@ class UnitTest(Linter):
     def run(self, _):  # type: (typing.List[str]) -> None
         from unittest.main import TestProgram
 
-        status = 0
         errors = []
 
         if sys.version_info >= (3, 0, 0):
