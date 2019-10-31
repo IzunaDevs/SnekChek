@@ -74,7 +74,7 @@ config = configobj.ConfigObj(  # pylint: disable=invalid-name
             u"exclude": u"",
             u"versions": [
                 u"PY" + version
-                for version in (u"27", *(u"3" + str(c) for c in range(3, 9)))
+                for version in (u"27", u"33", u"34", u"35", u"36", u"37", u"38")
             ],
         },
     }
