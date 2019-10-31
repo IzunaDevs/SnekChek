@@ -87,8 +87,8 @@ class Pypi(Linter):
         import twine.settings
 
         try:
-            with redirect_stdout(io.StringIO()), redirect_stderr(
-                    io.StringIO()):
+            with redirect_stdout(io.StringIO()), \
+                    redirect_stderr(io.StringIO()):
 
                 if sys.version_info >= (3, 0, 0):
                     proc = subprocess.Popen(  # noqa: B603
