@@ -31,9 +31,15 @@ class Pytest(Linter):
     def run(self, _):
         import pytest
 
-        with redirect_stdout(sys.stderr):
-            exitcode = pytest.main(
-                [u"--json=.log.json", u"-qqqq", u"-c", self.confpath])
+        if sys.version_info >= (3, 0, 0):
+            file = io.StringIO()
+        else:
+            file = io.BytesIO()
+
+        with redirect_stdout(file):
+            with redirect_stderr(file):
+                exitcode = pytest.main(
+                    [u"--json=.log.json", u"-qqqq", u"-c", self.confpath])
         self.status_code = exitcode
 
         with open(u".log.json") as file:

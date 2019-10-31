@@ -7,7 +7,7 @@ extension-pkg-whitelist=
 
 # Add files or directories to the blacklist. They should be base names, not
 # paths.
-ignore=CVS
+ignore=CVS, tests
 
 # Add files or directories matching the regex patterns to the blacklist. The
 # regex matches against base names, not paths.
@@ -55,6 +55,7 @@ disable=missing-docstring,
         wrong-import-order,
         import-error,
         too-few-public-methods,
+        redundant-unittest-assert,
         # Only for py2 things below
         redefined-builtin,  # for 'file' builtin
         deprecated-lambda,  # flatten function

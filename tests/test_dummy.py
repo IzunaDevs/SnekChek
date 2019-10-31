@@ -1,12 +1,11 @@
 # Stdlib
-import unittest
+from unittest import TestCase, skip
 
 
-def test_dummy():
-    assert True
+class UnitTest(TestCase):
+    def test_pass(self):
+        self.assertTrue(True)
 
-
-class UnitTest(unittest.TestCase):
-    @staticmethod
-    def test_pass():
-        return False
+    @skip("Will always fail")
+    def test_fail(self):
+        self.assertTrue(False)

@@ -56,5 +56,4 @@ if __name__ == '__main__':
               "Programming Language :: Python :: 3.7",
               "Topic :: Software Development :: Quality Assurance",
               "Topic :: Software Development :: Libraries :: Python Modules"
-          ],
-          python_requires=">=3.0")
+          ])
