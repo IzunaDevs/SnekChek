@@ -69,7 +69,9 @@ class UnitTest(Linter):
         with redirect_stderr(fileo):
             paths = glob.glob(self.conf["testpaths"])
             if len(paths) == 1 and os.path.isdir(paths[0]):
-                paths = [paths[0] + "/" + path for path in os.listdir(paths[0])]
+                paths = [
+                    paths[0] + "/" + path for path in os.listdir(paths[0])
+                ]
 
             for path in paths:
                 test_name = path.split(".")[0].replace("/", ".")
