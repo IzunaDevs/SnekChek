@@ -28,10 +28,9 @@ from __future__ import absolute_import
 
 # Stdlib
 import argparse
-
-# Snekchek
 from pathlib import Path
 
+# Snekchek
 from snekchek.config_gen import generate
 from snekchek.lint import get_linters
 from snekchek.structure import CheckHandler

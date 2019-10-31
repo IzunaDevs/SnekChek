@@ -72,6 +72,7 @@ class UnitTest(Linter):
                 prog = TestProgram(module, exit=False)
                 status += prog.result.wasSuccessful()
                 errors += prog.result.errors
+                errors += prog.result.failures
 
         fileo.seek(0)
         self.status_code = status

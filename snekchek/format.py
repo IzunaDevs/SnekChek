@@ -58,3 +58,9 @@ def pytest_format(data):
     for test in data:
         print(test[u"name"])
         print(test[u"call"][u"longrepr"])
+
+
+def unittest_format(data):
+    for test in data:
+        print("Test '{0}'".format(test[0]._testMethodName))  # pylint: disable=protected-access
+        print(test[1])

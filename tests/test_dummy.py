@@ -9,3 +9,7 @@ class UnitTest(TestCase):
     @skip("Will always fail")
     def test_fail(self):
         self.assertTrue(False)
+
+    @skip("Will also always fail")
+    def test_fail_2(self):
+        self.assertTrue(False)
