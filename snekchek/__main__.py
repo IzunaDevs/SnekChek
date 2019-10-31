@@ -29,7 +29,6 @@ from __future__ import absolute_import
 
 # Stdlib
 import argparse
-from pathlib import Path
 
 # Snekchek
 from snekchek.config_gen import generate
@@ -44,7 +43,7 @@ def run_main(args, do_exit=True):
     To extend this tool, use this function and set do_exit to False
     to get returned the status code.
     """
-    if args.init or not Path(args.config_file).exists():
+    if args.init or not os.path.exists(args.config_file):
         generate()
         return None  # exit after generating instead of starting to lint
 
