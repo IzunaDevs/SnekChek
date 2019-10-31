@@ -9,6 +9,7 @@ Currently included:
 from __future__ import print_function, with_statement
 
 # Stdlib
+import glob
 import io
 import json
 import os
@@ -66,10 +67,13 @@ class UnitTest(Linter):
             fileo = io.BytesIO()
 
         with redirect_stderr(fileo):
-            for file in os.listdir(self.conf["testpaths"]):
-                test_name = file.split(".")[0]
-                module = "{0}.{1}".format(self.conf["testpaths"], test_name)
-                prog = TestProgram(module, exit=False)
+            paths = glob.glob(self.conf["testpaths"])
+            if len(paths) == 1 and os.path.isdir(paths[0]):
+                paths = [paths[0] + "/" + path for path in os.listdir(paths[0])]
+
+            for path in paths:
+                test_name = path.split(".")[0].replace("/", ".")
+                prog = TestProgram(test_name, exit=False)
                 errors += prog.result.errors
                 errors += prog.result.failures
 
