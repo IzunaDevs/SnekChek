@@ -1,3 +1,5 @@
+import io
+
 # External Libraries
 from setuptools import setup, find_packages
 
@@ -8,10 +10,10 @@ from snekchek.secure import get_security
 from snekchek.style import get_stylers
 from snekchek.tool import get_tools
 
-with open("README.rst", encoding="utf-8") as file:
+with io.open("README.rst", encoding=u"utf-8") as file:
     README = file.read()
 
-with open("requirements.txt", encoding="utf-8") as file:
+with io.open("requirements.txt", encoding=u"utf-8") as file:
     REQUIREMENTS = file.readlines()
 
 EXTRAS = {}

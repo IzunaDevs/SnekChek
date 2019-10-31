@@ -44,7 +44,7 @@ class Pytest(Linter):
                     [u"--json=.log.json", u"-qqqq", u"-c", self.confpath])
         self.status_code = exitcode
 
-        with open(u".log.json", encoding="utf-8") as file:
+        with io.open(u".log.json", encoding=u"utf-8") as file:
             data = json.load(file)
 
         os.remove(u".log.json")
