@@ -47,11 +47,11 @@ class ISort(Linter):
                 1 if sort.incorrectly_sorted else 0)
 
             if self.conf.as_bool(u"inplace"):
-                with open(filename, u"w") as file:
+                with open(filename, u"w", encoding="utf-8") as file:
                     file.write(sort.output)
 
             else:
-                with open(filename) as file:
+                with open(filename, encoding="utf-8") as file:
                     out = io.StringIO()
                     with redirect_stdout(out):
                         sort._show_diff(file.read())  # pylint: disable=protected-access
@@ -82,7 +82,7 @@ class Yapf(Linter):
             if changed:
 
                 if self.conf.as_bool(u"inplace"):
-                    with open(file, u"w") as new_file:
+                    with open(file, u"w", encoding="utf-8") as new_file:
                         new_file.write(code)
 
                 else:
