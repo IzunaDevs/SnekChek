@@ -29,6 +29,7 @@ from __future__ import absolute_import
 
 # Stdlib
 import argparse
+import os
 
 # Snekchek
 from snekchek.config_gen import generate
