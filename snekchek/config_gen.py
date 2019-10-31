@@ -16,7 +16,7 @@ class ConfigGenerator:
     u"""class for config generation"""
     def get_tools(self):
         u"""Lets the user enter the tools he want to use"""
-        tools = u"flake8,pylint,vulture,pyroma,isort,yapf,safety,dodgy,pytest,pypi".split(
+        tools = u"flake8,pylint,vulture,pyroma,isort,yapf,black,safety,dodgy,pytest,pypi".split(
             u",")
         print(u"Available tools: {0}".format(u",".join(tools)))
         answer = ask_list(u"What tools would you like to use?",
@@ -99,8 +99,8 @@ def ask_bool(question, default=True):
 
 def ask_int(question, default=None):
     u"""Asks for a number in a question"""
-    default_q = u" [default: {0}]: ".format(
-        default) if default is not None else ''
+    default_q = (u" [default: {0}]: ".format(default)
+                 if default is not None else '')
     answer = input(u"{0} [{1}]: ".format(question, default_q))
 
     if not answer:
@@ -118,8 +118,8 @@ def ask_int(question, default=None):
 
 def ask_path(question, default=None):
     u"""Asks for a path"""
-    default_q = u" [default: {0}]: ".format(
-        default) if default is not None else ''
+    default_q = (u" [default: {0}]: ".format(default)
+                 if default is not None else '')
     answer = input(u"{0} [{1}]: ".format(question, default_q))
 
     if answer == '':
@@ -135,8 +135,8 @@ def ask_path(question, default=None):
 
 def ask_list(question, default=None):
     u"""Asks for a comma seperated list of strings"""
-    default_q = u" [default: {0}]: ".format(
-        u",".join(default)) if default is not None else ''
+    default_q = (u" [default: {0}]: ".format(u",".join(default))
+                 if default is not None else '')
     answer = input(u"{0} [{1}]: ".format(question, default_q))
 
     if answer == '':
@@ -146,8 +146,8 @@ def ask_list(question, default=None):
 
 def ask_str(question, default=None):
     u"""Asks for a simple string"""
-    default_q = u" [default: {0}]: ".format(
-        default) if default is not None else ''
+    default_q = (u" [default: {0}]: ".format(default)
+                 if default is not None else '')
     answer = input(u"{0} [{1}]: ".format(question, default_q))
 
     if answer == '':

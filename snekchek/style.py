@@ -4,6 +4,7 @@ This file contains Style checkers.
 Stylers included:
 - isort
 - yapf
+- black
 """
 # __future__ imports
 from __future__ import with_statement
@@ -11,20 +12,21 @@ from __future__ import with_statement
 # Stdlib
 import io
 import sys
+import typing
 
 # Snekchek
 from snekchek.structure import Linter
-from snekchek.utils import redirect_stdout
+from snekchek.utils import redirect_stderr, redirect_stdout
 
 
-def get_stylers():
-    return ISort, Yapf
+def get_stylers():  # type: () -> typing.Tuple[typing.Type[Linter], ...]
+    return ISort, Yapf, Black
 
 
 class ISort(Linter):
     requires_install = [u"isort"]
 
-    def run(self, files):
+    def run(self, files):  # type: (typing.List[str]) -> None
         import isort
 
         self.conf[u"line_length"] = self.conf.as_int(u"line_length")
@@ -66,7 +68,7 @@ class Yapf(Linter):
     requires_install = [u"yapf"]
     base_pyversion = (3, 4, 0)
 
-    def run(self, files):
+    def run(self, files):  # type: (typing.List[str]) -> None
         import yapf.yapflib.yapf_api
 
         res = []
@@ -93,19 +95,37 @@ class Black(Linter):
     requires_install = [u"black"]
     base_pyversion = (3, 6, 0)  # From black setup.py
 
-    def run(self, files):
-        from black import main
+    def run(self, files):  # type: (typing.List[str]) -> None
+        from black import main, TargetVersion
 
         conf = self.conf
-        # version = 2 if sys.version_info[0] == 2 else sys.version_info[1]
-
-        try:
-            main.callback(sys, None, conf.get_int(u"line_length"),
-                          list(map(int, conf.get_list(u"versions"))), False,
-                          False, False, False, True, False,
-                          conf.get_bool(u"quiet"), False, "",
-                          conf.get_list(u"exclude"), files, None)
-        except SystemExit:
-            pass
-
+        file = io.StringIO()
+        with redirect_stderr(file):
+            try:
+                main.callback.__closure__[0].cell_contents(
+                    sys,
+                    None,
+                    conf.as_int(u"line_length"),
+                    list(
+                        map(
+                            lambda x: getattr(TargetVersion, x),
+                            conf.as_list(u"versions"),
+                        )),
+                    False,
+                    False,
+                    False,
+                    False,
+                    False,
+                    True,
+                    conf.as_bool(u"quiet"),
+                    False,
+                    "",
+                    conf[u"exclude"],
+                    tuple(files),
+                    self.confpath,
+                )
+            except SystemExit:
+                pass
+        file.seek(0)
+        self.status_code = "reformatted" in file.read()
         self.hook([])

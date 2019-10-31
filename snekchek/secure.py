@@ -13,20 +13,21 @@ import io
 import json
 import os
 import sys
+import typing
 
 # Snekchek
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stdout
 
 
-def get_security():
+def get_security():  # type: () -> typing.Tuple[typing.Type[Linter], ...]
     return Safety, Dodgy
 
 
 class Safety(Linter):
     requires_install = [u"safety"]
 
-    def run(self, _):
+    def run(self, _):  # type: (typing.List[str]) -> None
         import safety.cli
 
         if u"requirements.txt" not in os.listdir(u"."):
@@ -40,12 +41,21 @@ class Safety(Linter):
 
         try:
             with redirect_stdout(outfile):
-                safety.cli.check.callback(self.conf.get(u"pyup_key", ''),
-                                          self.conf.get(u"db_path", ''), True,
-                                          False, False, False, False,
-                                          u"requirements.txt",
-                                          self.conf.as_list(u"ignore"), "",
-                                          "http", None, 80)
+                safety.cli.check.callback(
+                    self.conf.get(u"pyup_key", ''),
+                    self.conf.get(u"db_path", ''),
+                    True,
+                    False,
+                    False,
+                    False,
+                    False,
+                    u"requirements.txt",
+                    self.conf.as_list(u"ignore"),
+                    "",
+                    "http",
+                    None,
+                    80,
+                )
         except SystemExit:
             # Raised by safety
             pass
@@ -61,7 +71,7 @@ class Safety(Linter):
 class Dodgy(Linter):
     requires_install = [u"dodgy"]
 
-    def run(self, _):
+    def run(self, _):  # type: (typing.List[str]) -> None
         import dodgy.run
 
         data = dodgy.run.run_checks(u".", self.conf.as_list(u"ignore_paths"))

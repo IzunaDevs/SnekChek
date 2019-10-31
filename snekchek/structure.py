@@ -8,12 +8,13 @@ import os
 import re
 import subprocess  # noqa: B404
 import sys
+import typing
 
 # Snekchek
 import snekchek.format
 
 
-def flatten(nested_list):
+def flatten(nested_list):  # type: (list) -> list
     u"""Flattens a list, ignore all the lambdas."""
     return list(
         sorted(
@@ -24,10 +25,12 @@ def flatten(nested_list):
                         lambda x: (
                             nested_list.extend(x)  # noqa: T484
                             if isinstance(x, list) else x),
-                        nested_list)))))
+                        nested_list,
+                    )),
+            )))
 
 
-def get_py_files(dir_name):
+def get_py_files(dir_name):  # type: (str) -> typing.List[str]
     u"""Get all .py files."""
     return flatten([
         x for x in
@@ -42,10 +45,13 @@ class ModuleNotInstalled(Exception):
 
 
 class CheckHandler(object):
-    def __init__(self, file, out_json, check_dir=u".", files=None):
+    def __init__(
+            self, file, out_json, check_dir=u".",
+            files=None):  # type: (str, bool, str, typing.List[str]) -> None
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
+
         if not os.path.isfile(file):
             print(u"config file not found: {0}".format(file))
             if file != u".snekrc":
@@ -74,8 +80,7 @@ class CheckHandler(object):
 
         args = [sys.executable, u"-m", u"pip", u"list"]
 
-        proc = subprocess.Popen(  # noqa: B603
-            args, stdout=subprocess.PIPE)
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE)  # noqa: B603
 
         proc.wait()
 
@@ -105,7 +110,7 @@ class CheckHandler(object):
 
         sys.exit(self.status_code)
 
-    def run_linter(self, linter):
+    def run_linter(self, linter):  # type: (Linter) -> None
         u"""Run a checker class"""
         self.current = linter.name
 
@@ -121,29 +126,40 @@ class CheckHandler(object):
         linter.run(self.files)
         self.status_code = self.status_code or linter.status_code
 
-    def out_func(self, data):
+    def out_func(self, data):  # type: (typing.Any) -> None
         self.logs[self.current] = data
 
 
 class Linter(object):
     u"""Common shared class for all linters/stylers/tools"""
 
-    requires_install = []
-    base_pyversion = (2, 7, 0)
+    requires_install = []  # type: typing.List[str]
+    base_pyversion = (2, 7, 0)  # type: typing.Tuple[int, int, int]
 
     def __init__(self):
         self.status_code = 0
-        self.hook = None
-        self.confpath = None
-        self.conf = None
+        self.hook = (
+            None)  # type: typing.Optional[typing.Callable[[typing.Any], None]]
+        self.confpath = None  # type: typing.Optional[str]
+        self.conf = None  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
-    def add_output_hook(self, func):
+    def add_output_hook(
+            self, func):  # type: (typing.Callable[[typing.Any], None]) -> None
         self.hook = func
 
-    def set_config(self, confpath, section):
+    def set_config(
+            self, confpath,
+            section):  # type: (str, typing.Dict[str, typing.Any]) -> None
         self.confpath = confpath
         self.conf = section
 
+    def get_ignored_files(self):  # pylint: disable=no-self-use
+        # type: () -> typing.List[str]
+        return []
+
+    def run(self, files):  # type: (typing.List[str]) -> None
+        raise NotImplementedError
+
     @property
-    def name(self):
+    def name(self):  # type: () -> str
         return self.__class__.__name__.lower()

@@ -26,13 +26,14 @@ import io
 import json
 import re
 import sys
+import typing
 
 # Snekchek
 from snekchek.structure import Linter
 from snekchek.utils import redirect_stderr, redirect_stdout
 
 
-def get_linters():
+def get_linters():  # type: () -> typing.Tuple[typing.Type[Linter], ...]
     return Vulture, Pylint, Pyroma, Flake8
 
 
@@ -41,9 +42,11 @@ class Flake8(Linter):
 
     patt = re.compile(
         u"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
-        u"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\\n", re.M)
+        u"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\\n",
+        re.M,
+    )
 
-    def run(self, files):
+    def run(self, files):  # type: (typing.List[str]) -> None
         import flake8.main.cli
 
         if sys.version_info >= (3, 0, 0):
@@ -76,7 +79,7 @@ class Vulture(Linter):
         u"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
         u"\\((?P<conf>[0-9]+)% confidence\\)$")
 
-    def run(self, files):
+    def run(self, files):  # type: (typing.List[str]) -> None
         import vulture.core
 
         vult = vulture.core.Vulture(self.conf.as_bool(u"verbose"))
@@ -87,8 +90,10 @@ class Vulture(Linter):
         else:
             file = io.BytesIO()
         with redirect_stdout(file):
-            vult.report(self.conf.as_int(u"min-confidence"),
-                        self.conf.as_bool(u"sort-by-size"))
+            vult.report(
+                self.conf.as_int(u"min-confidence"),
+                self.conf.as_bool(u"sort-by-size"),
+            )
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
         self.status_code = 1 if matches else 0
@@ -101,7 +106,7 @@ class Vulture(Linter):
 class Pylint(Linter):
     requires_install = [u"pylint"]
 
-    def run(self, files):
+    def run(self, files):  # type: (typing.List[str]) -> None
         args = [u"-f", u"json"] + files
         if sys.version_info >= (3, 0, 0):
             file = io.StringIO()
@@ -110,6 +115,7 @@ class Pylint(Linter):
 
         with redirect_stdout(sys.stderr), redirect_stderr(file):
             import pylint.lint
+
             if sys.version_info >= (3, 0, 0):
                 pylint.lint.Run(args, do_exit=False)
             else:
@@ -127,7 +133,7 @@ class Pylint(Linter):
 class Pyroma(Linter):
     requires_install = [u"pyroma"]
 
-    def run(self, _):
+    def run(self, _):  # type: (typing.List[str]) -> None
 
         if sys.version_info >= (3, 0, 0):
             t = io.StringIO
@@ -138,6 +144,7 @@ class Pyroma(Linter):
         with redirect_stdout(file), redirect_stderr(t()):
             # Import pyroma here because it uses logging and sys.stdout
             import pyroma  # noqa pylint: disable=all
+
             pyroma.run(u"directory", u".")
         file.seek(0)
 
