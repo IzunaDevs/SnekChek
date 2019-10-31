@@ -6,10 +6,10 @@ flake8-string-format
 flake8-bandit
 pyroma
 pylint
-vulture;python_version>=3
+vulture; python_version>='3'
 isort
 yapf
-black;python_version>=3.6.0
+black; python_version>='3.6.0'
 safety
 dodgy
 pytest
