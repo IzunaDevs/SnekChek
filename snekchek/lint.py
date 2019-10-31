@@ -102,14 +102,14 @@ class Pylint(Linter):
     requires_install = [u"pylint"]
 
     def run(self, files):
-        import pylint.lint
-
         args = [u"-f", u"json"] + files
         if sys.version_info >= (3, 0, 0):
             file = io.StringIO()
         else:
             file = io.BytesIO()
-        with redirect_stdout(file):
+
+        with redirect_stdout(sys.stderr), redirect_stderr(file):
+            import pylint.lint
             if sys.version_info >= (3, 0, 0):
                 pylint.lint.Run(args, do_exit=False)
             else:

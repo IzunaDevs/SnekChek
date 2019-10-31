@@ -10,6 +10,7 @@ from __future__ import with_statement
 
 # Stdlib
 import io
+import sys
 
 # Snekchek
 from snekchek.structure import Linter
@@ -86,3 +87,25 @@ class Yapf(Linter):
                     res.append(code.strip())
 
         self.hook(res)
+
+
+class Black(Linter):
+    requires_install = [u"black"]
+    base_pyversion = (3, 6, 0)  # From black setup.py
+
+    def run(self, files):
+        from black import main
+
+        conf = self.conf
+        # version = 2 if sys.version_info[0] == 2 else sys.version_info[1]
+
+        try:
+            main.callback(sys, None, conf.get_int(u"line_length"),
+                          list(map(int, conf.get_list(u"versions"))), False,
+                          False, False, False, True, False,
+                          conf.get_bool(u"quiet"), False, "",
+                          conf.get_list(u"exclude"), files, None)
+        except SystemExit:
+            pass
+
+        self.hook([])

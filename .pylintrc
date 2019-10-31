@@ -54,6 +54,7 @@ disable=missing-docstring,
         too-many-instance-attributes,
         wrong-import-order,
         import-error,
+        import-outside-toplevel,
         too-few-public-methods,
         redundant-unittest-assert,
         # Only for py2 things below

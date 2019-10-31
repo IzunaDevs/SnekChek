@@ -78,5 +78,11 @@ config = configobj.ConfigObj({  # pylint: disable=invalid-name
     u"unittest": {
         u"quiet": False,
         u"testpaths": "tests"
+    },
+    u"black": {
+        u"quiet": False,
+        u"line_length": 79,
+        u"exclude": [],
+        u"versions": list(range(2, 9))
     }
 })
