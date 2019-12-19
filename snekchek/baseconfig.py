@@ -1,4 +1,7 @@
-u"""Base config for entry points."""
+"""Base config for entry points."""
+
+# __future__ imports
+from __future__ import unicode_literals
 
 # Stdlib
 import os
@@ -6,75 +9,75 @@ import os
 # External Libraries
 import configobj
 
-__all__ = (u"config", )
+__all__ = ("config", )
 
 config = configobj.ConfigObj(  # pylint: disable=invalid-name
     {
-        u"all": {
-            u"linters": [
-                u"flake8",
-                u"pylint",
-                u"yapf",
-                u"isort",
-                u"pyroma",
-                u"safety",
-                u"dodgy",
-                u"vulture",
-                u"pytest",
-                u"pypi",
+        "all": {
+            "linters": [
+                "flake8",
+                "pylint",
+                "yapf",
+                "isort",
+                "pyroma",
+                "safety",
+                "dodgy",
+                "vulture",
+                "pytest",
+                "pypi",
             ]
         },
-        u"pypi": {
-            u"TWINE_USERNAME": os.environ.get(u"TWINE_USERNAME", u"abc"),
-            u"TWINE_PASSWORD": os.environ.get(u"TWINE_PASSWORD", u"abc"),
-            u"sign": False,
-            u"TWINE_REPOSITORY": u"pypi",
-            u"quiet": False,
+        "pypi": {
+            "TWINE_USERNAME": os.environ.get("TWINE_USERNAME", "abc"),
+            "TWINE_PASSWORD": os.environ.get("TWINE_PASSWORD", "abc"),
+            "sign": False,
+            "TWINE_REPOSITORY": "pypi",
+            "quiet": False,
         },
-        u"flake8": {
-            u"max-line-length": 79,
-            u"exclude": [u"build", u"dist"],
-            u"ignore": [],
-            u"quiet": False,
+        "flake8": {
+            "max-line-length": 79,
+            "exclude": ["build", "dist"],
+            "ignore": [],
+            "quiet": False,
         },
-        u"pylint": {u"quiet": False},
-        u"yapf": {u"inplace": True, u"quiet": False},
-        u"isort": {
-            u"line_length": 79,
-            u"multi_line_output": True,
-            u"inplace": True,
-            u"indent": u"    ",
-            u"sections": u"FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER".split(
-                u","
+        "pylint": {"quiet": False},
+        "yapf": {"inplace": True, "quiet": False},
+        "isort": {
+            "line_length": 79,
+            "multi_line_output": True,
+            "inplace": True,
+            "indent": "    ",
+            "sections": "FUTURE,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER".split(
+                ","
             ),
-            u"quiet": False,
+            "quiet": False,
         },
-        u"bandit": {u"quiet": False},
-        u"style": {u"inplace": True, u"quiet": False},
-        u"pyroma": {u"quiet": False},
-        u"vulture": {
-            u"min-confidence": 60,
-            u"verbose": False,
-            u"exclude": [],
-            u"sort-by-size": False,
-            u"quiet": False,
+        "bandit": {"quiet": False},
+        "style": {"inplace": True, "quiet": False},
+        "pyroma": {"quiet": False},
+        "vulture": {
+            "min-confidence": 60,
+            "verbose": False,
+            "exclude": [],
+            "sort-by-size": False,
+            "quiet": False,
         },
-        u"safety": {
-            u"quiet": False,
-            u"ignore": [],
-            u"pyup_key": "",
-            u"db_pathu": "",
+        "safety": {
+            "quiet": False,
+            "ignore": [],
+            "pyup_key": "",
+            "db_path": "",
         },
-        u"dodgy": {u"quiet": False, u"ignore_paths": []},
-        u"pytest": {u"quiet": False, u"testpaths": "tests"},
-        u"unittest": {u"quiet": False, u"testpaths": "tests"},
-        u"black": {
-            u"quiet": False,
-            u"line_length": 79,
-            u"exclude": u"",
-            u"versions": [
-                u"PY" + version
-                for version in (u"27", u"33", u"34", u"35", u"36", u"37", u"38")
+        "dodgy": {"quiet": False, "ignore_paths": []},
+        "pytest": {"quiet": False, "testpaths": "tests"},
+        "unittest": {"quiet": False, "testpaths": "tests"},
+        "black": {
+            "quiet": False,
+            "line_length": 79,
+            "exclude": "",
+            "versions": [
+                "PY" + version
+                for version in ("27", "33", "34", "35", "36", "37", "38")
             ],
         },
     }

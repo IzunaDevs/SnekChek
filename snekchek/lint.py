@@ -1,4 +1,4 @@
-u"""
+"""
 This file contains linters.
 
 Linters included:
@@ -19,11 +19,12 @@ Linters included:
 """
 
 # __future__ imports
-from __future__ import print_function, with_statement
+from __future__ import print_function, with_statement, unicode_literals
 
 # Stdlib
 import io
 import json
+import os
 import re
 import sys
 import typing
@@ -38,61 +39,65 @@ def get_linters():  # type: () -> typing.Tuple[typing.Type[Linter], ...]
 
 
 class Flake8(Linter):
-    requires_install = [u"flake8"]
+    requires_install = ["flake8"]
 
     patt = re.compile(
-        u"(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
-        u"(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\\n",
+        "(?P<path>[^:]+):(?P<line>[0-9]+):(?P<col>[0-9]+): "
+        "(?P<errcode>[A-Z][0-9]+) (?P<msg>.+)$\\n",
         re.M,
     )
 
     def run(self, files):  # type: (typing.List[str]) -> None
-        import flake8.main.cli
+        # Flake8 has some issues with logging for some reason idk
+        from logging import StreamHandler
+        old_emit, StreamHandler.emit = StreamHandler.emit, lambda *_: None
 
-        if sys.version_info >= (3, 0, 0):
-            t = io.StringIO
-        else:
-            t = io.BytesIO
-        file = t()
-        with redirect_stdout(file) and redirect_stderr(t()):
-            try:
-                sett = [u"--config=" + self.confpath]
-                sett.extend(files)
-                flake8.main.cli.main(sett)
-            except SystemExit:
-                pass
-        file.seek(0)
-        matches = list(self.patt.finditer(file.read()))
-        self.status_code = 1 if matches else 0
-        self.hook(
-            list(
-                sorted([x.groupdict() for x in matches],
-                       key=lambda x: x[u"line"])))
+        import flake8.main.cli
+        try:
+            sett = [
+                u"--config=" + self.confpath, u"--output-file=.flake8_output"
+            ]
+            sett.extend(files)
+            flake8.main.cli.main(sett)
+        except SystemExit:
+            pass
+
+        # revert flake8 compat
+        StreamHandler.emit = old_emit
+
+        with open(".flake8_output") as file:
+            matches = list(self.patt.finditer(file.read()))
+            self.status_code = 1 if matches else 0
+            self.hook(
+                list(
+                    sorted([x.groupdict() for x in matches],
+                           key=lambda x: x["line"])))
+        if os.path.exists(".flake8_output"):
+            os.remove(".flake8_output")
 
 
 class Vulture(Linter):
-    requires_install = [u"vulture"]
+    requires_install = ["vulture"]
     base_pyversion = (3, 0, 0)
 
     patt = re.compile(
-        u"^(?P<path>[^:]+):(?P<line>[0-9]+): "
-        u"(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
-        u"\\((?P<conf>[0-9]+)% confidence\\)$")
+        "^(?P<path>[^:]+):(?P<line>[0-9]+): "
+        "(?P<err>unused (class|attribute|function) '[a-zA-Z0-9]+') "
+        "\\((?P<conf>[0-9]+)% confidence\\)$")
 
     def run(self, files):  # type: (typing.List[str]) -> None
         import vulture.core
 
-        vult = vulture.core.Vulture(self.conf.as_bool(u"verbose"))
-        vult.scavenge(files,
-                      [x.strip() for x in self.conf.as_list(u"exclude")])
+        vult = vulture.core.Vulture(self.conf.as_bool("verbose"))
+        vult.scavenge(files, [x.strip() for x in self.conf.as_list("exclude")])
         if sys.version_info >= (3, 0, 0):
             file = io.StringIO()
         else:
             file = io.BytesIO()
         with redirect_stdout(file):
             vult.report(
-                self.conf.as_int(u"min-confidence"),
-                self.conf.as_bool(u"sort-by-size"),
+                self.conf.as_int("min-confidence"),
+                self.conf.as_bool("sort-by-size"),
             )
         file.seek(0)
         matches = list(self.patt.finditer(file.read()))
@@ -100,14 +105,14 @@ class Vulture(Linter):
         self.hook(
             list(
                 sorted([x.groupdict() for x in matches],
-                       key=lambda x: x[u"line"])))
+                       key=lambda x: x["line"])))
 
 
 class Pylint(Linter):
-    requires_install = [u"pylint"]
+    requires_install = ["pylint"]
 
     def run(self, files):  # type: (typing.List[str]) -> None
-        args = [u"-f", u"json"] + files
+        args = ["-f", "json"] + files
         if sys.version_info >= (3, 0, 0):
             file = io.StringIO()
         else:
@@ -115,6 +120,13 @@ class Pylint(Linter):
 
         with redirect_stdout(sys.stderr), redirect_stderr(file):
             import pylint.lint
+
+            if sys.version_info < (3, 0, 0):
+                from pylint.reporters.json import JSONReporter
+                JSONReporter.__init__.__func__.__defaults__ = (file, )
+            else:
+                from pylint.reporters.json_reporter import JSONReporter
+                JSONReporter.__init__.__defaults__ = (file, )
 
             if sys.version_info >= (3, 0, 0):
                 pylint.lint.Run(args, do_exit=False)
@@ -135,7 +147,7 @@ class Pylint(Linter):
 
 
 class Pyroma(Linter):
-    requires_install = [u"pyroma"]
+    requires_install = ["pyroma"]
 
     def run(self, _):  # type: (typing.List[str]) -> None
 
@@ -145,39 +157,38 @@ class Pyroma(Linter):
             t = io.BytesIO
 
         file = t()
-        with redirect_stdout(file), redirect_stderr(t()):
+        with redirect_stdout(file), redirect_stderr(file):
             # Import pyroma here because it uses logging and sys.stdout
             import pyroma  # noqa pylint: disable=all
 
-            pyroma.run(u"directory", u".")
+            pyroma.run("directory", ".")
         file.seek(0)
 
         text = file.read()
 
-        lines = text.split(u"\n")
-
+        lines = text.split("\n")
         lines.pop(0)
         if sys.version_info >= (3, 0, 0):
             lines.pop(0)
 
-        data = {u"modules": {}}
+        data = {"modules": {}}
 
         module = lines.pop(0)[6:].strip()
-        data[u"modules"][module] = []
+        data["modules"][module] = []
         lines.pop(0)
         if len(lines) >= 6:
             line = lines.pop(0)
-            while line != u"-" * 30:
-                data[u"modules"][module].append(line)
+            while line != "-" * 30:
+                data["modules"][module].append(line)
                 line = lines.pop(0)
 
         rating = lines.pop(0)
-        data[u"rating"] = int(rating[14:-3])
-        data[u"rating_word"] = lines.pop(0)
+        data["rating"] = int(rating[14:-3])
+        data["rating_word"] = lines.pop(0)
 
-        self.status_code = 0 if data[u"rating"] == 10 else 1
+        self.status_code = 0 if data["rating"] == 10 else 1
 
-        if data[u"rating"] == 10:
+        if data["rating"] == 10:
             data = []
 
         self.hook(data)

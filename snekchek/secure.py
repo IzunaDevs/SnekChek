@@ -1,12 +1,14 @@
-u"""
+"""
 Checkers for security issues in the project.
 
 Checkers included:
 - Safety
 - Dodgy
+(bandit is supported in flake8-bandit)
 """
+
 # __future__ imports
-from __future__ import with_statement
+from __future__ import with_statement, unicode_literals
 
 # Stdlib
 import io
@@ -25,12 +27,12 @@ def get_security():  # type: () -> typing.Tuple[typing.Type[Linter], ...]
 
 
 class Safety(Linter):
-    requires_install = [u"safety"]
+    requires_install = ["safety"]
 
     def run(self, _):  # type: (typing.List[str]) -> None
         import safety.cli
 
-        if u"requirements.txt" not in os.listdir(u"."):
+        if "requirements.txt" not in os.listdir("."):
             self.hook([])
             return
 
@@ -42,15 +44,15 @@ class Safety(Linter):
         try:
             with redirect_stdout(outfile):
                 safety.cli.check.callback(
-                    self.conf.get(u"pyup_key", ''),
-                    self.conf.get(u"db_path", ''),
+                    self.conf.get("pyup_key", ''),
+                    self.conf.get("db_path", ''),
                     True,
                     False,
                     False,
                     False,
                     False,
-                    u"requirements.txt",
-                    self.conf.as_list(u"ignore"),
+                    "requirements.txt",
+                    self.conf.as_list("ignore"),
                     "",
                     "http",
                     None,
@@ -69,12 +71,12 @@ class Safety(Linter):
 
 
 class Dodgy(Linter):
-    requires_install = [u"dodgy"]
+    requires_install = ["dodgy"]
 
     def run(self, _):  # type: (typing.List[str]) -> None
         import dodgy.run
 
-        data = dodgy.run.run_checks(u".", self.conf.as_list(u"ignore_paths"))
+        data = dodgy.run.run_checks(".", self.conf.as_list("ignore_paths"))
 
         self.status_code = 1 if data else 0
 

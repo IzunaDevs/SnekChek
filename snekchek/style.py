@@ -1,13 +1,15 @@
-u"""
+"""
 This file contains Style checkers.
 
 Stylers included:
 - isort
 - yapf
 - black
+note that black is not compatible with pylint
 """
+
 # __future__ imports
-from __future__ import with_statement
+from __future__ import with_statement, unicode_literals
 
 # Stdlib
 import io
@@ -24,15 +26,14 @@ def get_stylers():  # type: () -> typing.Tuple[typing.Type[Linter], ...]
 
 
 class ISort(Linter):
-    requires_install = [u"isort"]
+    requires_install = ["isort"]
 
     def run(self, files):  # type: (typing.List[str]) -> None
         import isort
 
-        self.conf[u"line_length"] = self.conf.as_int(u"line_length")
-        self.conf[u"sections"] = self.conf.as_list(u"sections")
-        self.conf[u"multi_line_output"] = self.conf.as_int(
-            u"multi_line_output")
+        self.conf["line_length"] = self.conf.as_int("line_length")
+        self.conf["sections"] = self.conf.as_list("sections")
+        self.conf["multi_line_output"] = self.conf.as_int("multi_line_output")
 
         res = []
 
@@ -46,12 +47,12 @@ class ISort(Linter):
             self.status_code = self.status_code or (
                 1 if sort.incorrectly_sorted else 0)
 
-            if self.conf.as_bool(u"inplace"):
-                with io.open(filename, u"w", encoding=u"utf-8") as file:
+            if self.conf.as_bool("inplace"):
+                with io.open(filename, "w", encoding="utf-8") as file:
                     file.write(sort.output)
 
             else:
-                with io.open(filename, encoding=u"utf-8") as file:
+                with io.open(filename, encoding="utf-8") as file:
                     out = io.StringIO()
                     with redirect_stdout(out):
                         sort._show_diff(file.read())  # pylint: disable=protected-access
@@ -65,7 +66,7 @@ class ISort(Linter):
 
 
 class Yapf(Linter):
-    requires_install = [u"yapf"]
+    requires_install = ["yapf"]
     base_pyversion = (3, 4, 0)
 
     def run(self, files):  # type: (typing.List[str]) -> None
@@ -81,8 +82,8 @@ class Yapf(Linter):
 
             if changed:
 
-                if self.conf.as_bool(u"inplace"):
-                    with io.open(file, u"w", encoding=u"utf-8") as new_file:
+                if self.conf.as_bool("inplace"):
+                    with io.open(file, "w", encoding="utf-8") as new_file:
                         new_file.write(code)
 
                 else:
@@ -92,7 +93,7 @@ class Yapf(Linter):
 
 
 class Black(Linter):
-    requires_install = [u"black"]
+    requires_install = ["black"]
     base_pyversion = (3, 6, 0)  # From black setup.py
 
     def run(self, files):  # type: (typing.List[str]) -> None
@@ -105,11 +106,11 @@ class Black(Linter):
                 main.callback.__closure__[0].cell_contents(
                     sys,
                     None,
-                    conf.as_int(u"line_length"),
+                    conf.as_int("line_length"),
                     list(
                         map(
                             lambda x: getattr(TargetVersion, x),
-                            conf.as_list(u"versions"),
+                            conf.as_list("versions"),
                         )),
                     False,
                     False,
@@ -117,10 +118,10 @@ class Black(Linter):
                     False,
                     False,
                     True,
-                    conf.as_bool(u"quiet"),
+                    conf.as_bool("quiet"),
                     False,
                     "",
-                    conf[u"exclude"],
+                    conf["exclude"],
                     tuple(files),
                     self.confpath,
                 )

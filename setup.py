@@ -1,3 +1,7 @@
+# __future__ imports
+from __future__ import unicode_literals
+
+# Stdlib
 import io
 
 # External Libraries
@@ -10,10 +14,10 @@ from snekchek.secure import get_security
 from snekchek.style import get_stylers
 from snekchek.tool import get_tools
 
-with io.open("README.rst", encoding=u"utf-8") as file:
+with io.open("README.rst", encoding="utf-8") as file:
     README = file.read()
 
-with io.open("requirements.txt", encoding=u"utf-8") as file:
+with io.open("requirements.txt", encoding="utf-8") as file:
     REQUIREMENTS = file.readlines()
 
 EXTRAS = {}
