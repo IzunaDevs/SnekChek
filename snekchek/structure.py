@@ -142,8 +142,8 @@ class Linter(object):
         self.confpath = None  # type: typing.Optional[str]
         self.conf = None  # type: typing.Optional[typing.Dict[str, typing.Any]]
 
-    def add_output_hook(
-            self, func):  # type: (typing.Callable[[typing.Any], None]) -> None
+    def add_output_hook(self, func):
+        # type: (typing.Callable[[typing.Any], None]) -> None
         self.hook = func
 
     def set_config(self, confpath, section):
