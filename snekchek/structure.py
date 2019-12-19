@@ -45,9 +45,8 @@ class ModuleNotInstalled(Exception):
 
 
 class CheckHandler(object):
-    def __init__(
-            self, file, out_json, check_dir=".",
-            files=None):  # type: (str, bool, str, typing.List[str]) -> None
+    def __init__(self, file, out_json, check_dir=".", files=None):
+        # type: (str, bool, str, typing.List[str]) -> None
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
@@ -147,9 +146,8 @@ class Linter(object):
             self, func):  # type: (typing.Callable[[typing.Any], None]) -> None
         self.hook = func
 
-    def set_config(
-            self, confpath,
-            section):  # type: (str, typing.Dict[str, typing.Any]) -> None
+    def set_config(self, confpath, section):
+        # type: (str, typing.Dict[str, typing.Any]) -> None
         self.confpath = confpath
         self.conf = section
 
