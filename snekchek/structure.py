@@ -45,7 +45,8 @@ class ModuleNotInstalled(Exception):
 
 
 class CheckHandler(object):
-    def __init__(self, file, out_json, *, out_json_indent=0, check_dir=".", files=None):
+    # pylint:disable=too-many-arguments
+    def __init__(self, file, out_json, out_json_indent=0, check_dir=".", files=None):
         # type: (str, bool, str, int, typing.List[str]) -> None
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
