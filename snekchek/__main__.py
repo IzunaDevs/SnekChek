@@ -30,6 +30,7 @@ from __future__ import absolute_import
 # Stdlib
 import argparse
 import os
+import sys
 
 # Snekchek
 from snekchek.config_gen import generate
@@ -52,8 +53,9 @@ def run_main(args, do_exit=True):
                            out_json=args.json,
                            files=args.files)
 
-    for style in get_stylers():
-        handler.run_linter(style())
+    if "--skip-format" not in sys.argv:
+        for style in get_stylers():
+            handler.run_linter(style())
 
     for linter in get_linters():
         handler.run_linter(linter())
