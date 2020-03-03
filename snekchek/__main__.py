@@ -90,11 +90,9 @@ def main():
         action=u"store_true",
         default=False,
     )
-    parser.add_argument(
-        u"--config-file",
-        help=u"Select config file to use",
-        default=u".snekrc"
-    )
+    parser.add_argument(u"--config-file",
+                        help=u"Select config file to use",
+                        default=u".snekrc")
     parser.add_argument(
         u"files",
         metavar=u"file",
@@ -102,25 +100,19 @@ def main():
         default=[],
         help=u"Files to run checks against",
     )
-    parser.add_argument(
-        u"--init",
-        help=u"generate snekrc",
-        action=u"store_true",
-        default=False
-    )
-    parser.add_argument(
-        u"--skip-format",
-        help=u"skip formatters like isort and black",
-        action=u"store_true",
-        default=False
-    )
-    parser.add_argument(
-        u"--json-indent",
-        help=u"Indents to use for JSON",
-        metavar="n",
-        type=int,
-        default=0
-    )
+    parser.add_argument(u"--init",
+                        help=u"generate snekrc",
+                        action=u"store_true",
+                        default=False)
+    parser.add_argument(u"--skip-format",
+                        help=u"skip formatters like isort and black",
+                        action=u"store_true",
+                        default=False)
+    parser.add_argument(u"--json-indent",
+                        help=u"Indents to use for JSON",
+                        metavar="n",
+                        type=int,
+                        default=0)
 
     args = parser.parse_args()
 
