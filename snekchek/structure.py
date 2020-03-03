@@ -45,8 +45,8 @@ class ModuleNotInstalled(Exception):
 
 
 class CheckHandler(object):
-    def __init__(self, file, out_json, check_dir=".", files=None):
-        # type: (str, bool, str, typing.List[str]) -> None
+    def __init__(self, file, out_json, out_json_indent=0, check_dir=".", files=None):
+        # type: (str, bool, str, int, typing.List[str]) -> None
         # Do this here so setup.py doesn't error
         from snekchek.baseconfig import config
         import configobj
@@ -69,8 +69,7 @@ class CheckHandler(object):
         self.logs = {}
         self.current = ''
         self.json = out_json
-
-        self.indent = 4 if "--debug" in sys.argv else None
+        self.indent = out_json_indent
 
         self.files = files or get_py_files(check_dir)
 
